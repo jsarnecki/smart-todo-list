@@ -1,0 +1,63 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Smart todo list</title>
+  <link rel="stylesheet" href="/vendor/normalize-4.1.1.css" type="text/css" />
+  <link rel="stylesheet" href="/vendor/border-box.css" type="text/css" />
+  <link rel="stylesheet" href="/styles/main.css" type="text/css" />
+  <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
+
+  <script type="text/javascript" src="/vendor/jquery-3.0.0.js"></script>
+  <script type="text/javascript" src="/scripts/app.js"></script>
+</head>
+
+<body>
+  <h1>Have fun! 🥔</h1>
+</body>
+
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Smart todo list</title>
+  <link rel="stylesheet" href="/vendor/normalize-4.1.1.css" type="text/css" />
+  <link rel="stylesheet" href="/vendor/border-box.css" type="text/css" />
+  <link rel="stylesheet" href="/styles/main.css" type="text/css" />
+  <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
+
+  <script type="text/javascript" src="/vendor/jquery-3.0.0.js"></script>
+  <script type="text/javascript" src="/scripts/app.js"></script>
+  <script type="text/javascript" src="/routes/tasks.js"></script>
+
+</head>
+
+<body>
+  <!-- NAV BAR -->
+  <!-- <header>
+  <nav>
+  <span id="logo">SMART TODO LIST</span>
+  </nav>
+  </header> -->
+
+      <!-- Page-specific (main) content here -->
+      <main class="container">
+        <section class="new-task">
+          <form id="user-input" method="POST" action="/tasks/">
+            <span class="error" id="errorname"></span>
+            <label class="" for="new-task">New Task:</label>
+            <textarea name="text" id="new-task" style="height: 37px; width: 538px;"></textarea>
+            <div class="button-count" style="height: 37px; width: 538px;">
+              <button type="submit" id="create-task">ENTER</button>
+            </div>
+          </form>
+        </section>
+        <section class="container">
+        </section>
+    </main>
+    </body>
+</body>
+
+</html>
