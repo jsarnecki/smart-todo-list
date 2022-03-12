@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang='en'>
+  <head>
+    <title>TODO List</title>
+
+    <!-- App CSS -->
+    <link rel="stylesheet" href="../styles/layout.scss" type="text/scss" />
+    <link rel="stylesheet" href="../styles/main.scss" type="text/scss" />
+
+    <!-- External JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <!-- App JS -->
+    <script type="text/javascript" src="/scripts/app.js"></script>
+  </head>
+  <body>
+    <!-- input box and settings -->
+    <nav>
+      <form method="post" action="/api/tasks" id="create-task">
+        <textarea name="text" id="user-input"></textarea>
+        <button type="submit">+</button>
+      </form>
+    </nav>
+    <!-- main content-->
+    <main>
+      <!-- tasks -->
+      <section id="todo-list"></section>
+    </main>
+  </body>
+</html>
