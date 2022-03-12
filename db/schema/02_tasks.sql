@@ -7,5 +7,6 @@ CREATE TABLE tasks (
   description TEXT,
   category VARCHAR(255) NOT NULL,
   is_complete BOOLEAN NOT NULL,
-  date_completed DATE
+  date_created TIMESTAMP,
+  date_completed TIMESTAMP
 );
