@@ -70,7 +70,42 @@ const deleteTask = (db, task_id) => {
     });
 };
 
+const recategorizeTask = (db, task_id) => {
+  const categories = ["eat", "watch", "read", "buy", "none"]
+  let queryString = `SELECT category FROM tasks WHERE id = $1;`
+
+  db.query(queryString, [task_id])
+    .then((res) => {
+      const category = res.rows[0].category;
+      let index = categories.indexOf(category);
+      index + 1 > 4 ? index = 0 : index++;
+
+      queryString = `
+      UPDATE tasks
+      SET category = $1
+      WHERE id = $2;
+      `;
+
+      console.log(index);
+      return db.query(queryString, [categories[index], task_id])
+        .then((res) => {
+          if (res.rows) {
+            return Promise.resolve(res.rows);
+          } else {
+            return null;
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    })
+    .catch(err => {
+      console.log(err);
+    });
+};
+
 module.exports = {
   addTask,
-  deleteTask
+  deleteTask,
+  recategorizeTask
 };
