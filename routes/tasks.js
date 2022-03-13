@@ -8,11 +8,11 @@
 const express = require('express');
 const router  = express.Router();
 
-const { addTask, deleteTask, recategorizeTask } = require("../database");
+const { addTask, deleteTask, recategorizeTask, completeTask } = require("../database");
 
 module.exports = (db) => {
   router.get("/", (req, res) => {
-    let query = `SELECT * FROM tasks`;
+    let query = `SELECT * FROM tasks ORDER BY id;`;
     console.log(query);
     db.query(query)
       .then(data => {
@@ -32,14 +32,17 @@ module.exports = (db) => {
   });
 
   router.post("/delete/:id", (req, res) => {
-    const task_id = req.params.id;
-    deleteTask(db, task_id);
+    deleteTask(db, req.params.id);
     res.redirect("/");
   });
 
-  router.post("/update/:id", (req, res) => {
-    const task_id = req.params.id;
-    recategorizeTask(db, task_id);
+  router.post("/update/category/:id", (req, res) => {
+    recategorizeTask(db, req.params.id);
+    res.redirect("/");
+  });
+
+  router.post("/update/complete/:id", (req, res) => {
+    completeTask(db, req.params.id);
     res.redirect("/");
   });
 
