@@ -38,6 +38,11 @@ $(document).ready(function() {
       })
   });
 
+  $(document).on("click", "[name='change-category']", function() {
+    const task_id = $(this).parent().children("label").attr("name");
+    $.post(`/api/tasks/update/${task_id}`);
+  });
+
   // $("#create-task").submit(function(event) {
   //   $.post("/api/tasks/")
   //     .then((data) => {
