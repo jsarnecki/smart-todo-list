@@ -8,7 +8,7 @@
 const express = require('express');
 const router  = express.Router();
 
-const { addTask } = require("../database");
+const { addTask, deleteTask } = require("../database");
 
 module.exports = (db) => {
   router.get("/", (req, res) => {
@@ -26,8 +26,14 @@ module.exports = (db) => {
       });
   });
 
-  router.post("/", (req, res) => {
+  router.post("/new", (req, res) => {
     addTask(db, 1, req.body.text);
+    res.redirect("/");
+  });
+
+  router.post("/delete/:id", (req, res) => {
+    const task_id = req.params.id;
+    deleteTask(db, task_id);
     res.redirect("/");
   });
 
