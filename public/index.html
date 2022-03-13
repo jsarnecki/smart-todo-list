@@ -1,63 +1,59 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <title>Smart todo list</title>
-  <link rel="stylesheet" href="/vendor/normalize-4.1.1.css" type="text/css" />
-  <link rel="stylesheet" href="/vendor/border-box.css" type="text/css" />
-  <link rel="stylesheet" href="/styles/main.css" type="text/css" />
-  <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
-
-  <script type="text/javascript" src="/vendor/jquery-3.0.0.js"></script>
-  <script type="text/javascript" src="/scripts/app.js"></script>
-</head>
-
-<body>
-  <h1>Have fun! 🥔</h1>
-</body>
-
-</html> -->
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-  <title>Smart todo list</title>
+
+<!-- Google Fonts & Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Hubballi&family=Roboto+Mono:wght@200&family=Source+Sans+Pro:ital,wght@0,300;0,600;1,300;1,600&display=swap" rel="stylesheet">
+
+<!-- App CSS  -->
   <link rel="stylesheet" href="/vendor/normalize-4.1.1.css" type="text/css" />
   <link rel="stylesheet" href="/vendor/border-box.css" type="text/css" />
   <link rel="stylesheet" href="/styles/main.css" type="text/css" />
   <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
 
+  <link rel="stylesheet" href="../styles/layout.scss" type="text/scss" />
+  <link rel="stylesheet" href="../styles/main.scss" type="text/scss" />
+
+     <!-- External JS -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js%22%3E"></script>
   <script type="text/javascript" src="/vendor/jquery-3.0.0.js"></script>
   <script type="text/javascript" src="/scripts/app.js"></script>
   <script type="text/javascript" src="/routes/tasks.js"></script>
 
 </head>
-
 <body>
-  <!-- NAV BAR -->
-  <!-- <header>
-  <nav>
-  <span id="logo">SMART TODO LIST</span>
-  </nav>
-  </header> -->
+      <!-- input box and settings -->
+      <section id="task-input">
+        <form class="task" method="post" action="/api/tasks/new" id="create-task">
+          <label class="todo" for="user-input">WHATODO</label>
+          <div class="center">
+          <textarea name="text" id="user-input"></textarea>
+          <button type="submit" id="load-task"class="fa-solid fa-plus"></button>
+        </div>
+        </form>
+      </section>
 
-      <!-- Page-specific (main) content here -->
-      <main class="container">
-        <section class="new-task">
-          <form id="user-input" method="POST" action="/tasks/">
-            <span class="error" id="errorname"></span>
-            <label class="" for="new-task">New Task:</label>
-            <textarea name="text" id="new-task" style="height: 37px; width: 538px;"></textarea>
-            <div class="button-count" style="height: 37px; width: 538px;">
-              <button type="submit" id="create-task">ENTER</button>
-            </div>
-          </form>
+      <!-- main content here -->
+      <main>
+        <section id="todo-list">
+          <article>
+            <input class="checkbox" type="checkbox" name="complete-task">
+            <label>Task Description</label>
+            <button name="change-category">Category</button>
+            <button name="delete-task">Delete</button>
+          </article>
         </section>
-        <section class="container">
-        </section>
-    </main>
+      </main>
     </body>
-</body>
+  </html>
 
-</html>
+
+
+
+
+
+
