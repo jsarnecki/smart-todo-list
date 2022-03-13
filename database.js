@@ -55,4 +55,22 @@ const addTask = (db, user_id, query) => {
     });
 };
 
-module.exports = { addTask };
+const deleteTask = (db, task_id) => {
+  const queryString = `DELETE FROM tasks WHERE id = $1;`;
+  return db.query(queryString, [task_id])
+    .then((res) => {
+      if (res.rows) {
+        return Promise.resolve(res.rows);
+      } else {
+        return null;
+      }
+    })
+    .catch(err => {
+      console.log(err);
+    });
+};
+
+module.exports = {
+  addTask,
+  deleteTask
+};
