@@ -86,8 +86,46 @@ const recategorizeTask = (db, task_id) => {
       WHERE id = $2;
       `;
 
-      console.log(index);
       return db.query(queryString, [categories[index], task_id])
+        .then((res) => {
+          if (res.rows) {
+            return Promise.resolve(res.rows);
+          } else {
+            return null;
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    })
+    .catch(err => {
+      console.log(err);
+    });
+};
+
+const completeTask = (db, task_id) => {
+  let queryString = `SELECT is_complete FROM tasks WHERE id = $1;`
+
+  db.query(queryString, [task_id])
+    .then((res) => {
+      let is_complete = res.rows[0].is_complete;
+      let date;
+
+      if (is_complete) {
+        is_complete = 0;
+        date = null;
+      } else {
+        is_complete = 1;
+        date = new Date;
+      }
+
+      queryString = `
+      UPDATE tasks
+      SET is_complete = $1, date_completed = $2
+      WHERE id = $3;
+      `;
+
+      return db.query(queryString, [is_complete, date, task_id])
         .then((res) => {
           if (res.rows) {
             return Promise.resolve(res.rows);
@@ -107,5 +145,6 @@ const recategorizeTask = (db, task_id) => {
 module.exports = {
   addTask,
   deleteTask,
-  recategorizeTask
+  recategorizeTask,
+  completeTask
 };
