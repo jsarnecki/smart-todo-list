@@ -1,6 +1,6 @@
 
 const rp = require('request-promise-native');
-const APIKEY = 'AIzaSyBJ-eqdhdex18EpEdsIFsb-QwoeEauolF0';
+const APIKEY = require('/constants')
 //const request = require('request');
 
 let cmdInput = process.argv.slice(2);
@@ -46,9 +46,9 @@ const keywords = {
 
 //TODO
 //have the cmdInput string multiple words together with +
-//After the search, have the 
+//After the search, have the
 
-//if type brings back Thing, with no other/minimal different types, do another apicall / 
+//if type brings back Thing, with no other/minimal different types, do another apicall /
 //or resend the query with some other search words
 //perhaps filter through a dictionary api, and only collect the words that are nouns
 //or perhaps instead have a database full of the most common verbs go/see/watch/etc which filters through
