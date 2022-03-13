@@ -7,20 +7,36 @@ const renderList = (tasks) => {
 }
 
 const makeListTask = (taskInfo) => {
-  const $task = `<header>${taskInfo.description} (${"to " + taskInfo.category})</header>`;
+  const $task = `
+  <article>
+    <input type="checkbox" name="complete-task">
+    <label name="${taskInfo.id}">${taskInfo.description}</label>
+    <button name="change-category">${"to " + taskInfo.category}</button>
+    <button name="delete-task">Delete</button>
+  </article>
+  `;
   return $task;
 }
 
 const loadList = () => {
   $.get("/api/tasks/")
     .then((data) => {
-      console.log(data.tasks);
       renderList(data.tasks);
     })
 }
 
 $(document).ready(function() {
   loadList();
+
+  $(document).on("click", "[name='delete-task']", function() {
+    const task_id = $(this).parent().children("label").attr("name");
+
+    // remove from db
+    $.post(`/api/tasks/delete/${task_id}`)
+      .then((res) => {
+        $(this).closest("article").remove();
+      })
+  });
 
   // $("#create-task").submit(function(event) {
   //   $.post("/api/tasks/")
