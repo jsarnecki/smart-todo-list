@@ -9,12 +9,25 @@ const renderList = (tasks) => {
 const makeListTask = (taskInfo) => {
   let checked = "";
   taskInfo.is_complete ? checked = " checked" : null;
+
+  const icons = {
+    eat: "utensils",
+    watch: "video",
+    read: "book-open",
+    buy: "cart-shopping",
+    none: "question"
+  }
+
   const $task = `
   <article>
-    <input type="checkbox" name="complete-task"${checked}>
-    <label name="${taskInfo.id}">${taskInfo.description}</label>
-    <button name="change-category">${"to " + taskInfo.category}</button>
-    <button name="delete-task">Delete</button>
+    <div>
+      <input type="checkbox" name="complete-task"${checked}>
+      <label name="${taskInfo.id}">${taskInfo.description}</label>
+    </div>
+    <div>
+      <button name="change-category" class="fa-solid fa-${icons[taskInfo.category]} fa-lg"></button>
+      <button name="delete-task" class="fa-solid fa-trash fa-lg"></button>
+    </div>
   </article>
   `;
   return $task;
@@ -31,7 +44,7 @@ $(document).ready(function() {
   loadList();
 
   $(document).on("click", "[name='delete-task']", function() {
-    const task_id = $(this).parent().children("label").attr("name");
+    const task_id = $($(this).closest("article").children("div").children("label")[0]).attr("name");
 
     $.post(`/api/tasks/delete/${task_id}`)
       .then((res) => {
@@ -40,7 +53,8 @@ $(document).ready(function() {
   });
 
   $(document).on("click", "[name='change-category']", function() {
-    const task_id = $(this).parent().children("label").attr("name");
+    const task_id = $($(this).closest("article").children("div").children("label")[0]).attr("name");
+
     $.post(`/api/tasks/update/category/${task_id}`)
       .then((res) => {
         $("#todo-list").empty();

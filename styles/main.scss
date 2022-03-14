@@ -7,79 +7,63 @@ body {
   background: black;
 }
 
-.task {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
+// .task {
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+// }
 
-.todo {
- color: white;
- padding-top: 25px;
- font-family: 'Roboto Mono', sans-serif;
- font-size: 50px;
- display: flex;
- justify-content: flex-start;
-}
+// .todo {
+//  color: white;
+//  padding-top: 25px;
+//  font-family: 'Roboto Mono', sans-serif;
+//  font-size: 50px;
+//  display: flex;
+//  justify-content: flex-start;
+// }
 
-#task-input {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
+// #task-input {
+//   display: flex;
+//   flex-direction: column;
+//   align-items: flex-start;
+// }
 
-#todo-list {
-  color: white;
-  font-family: 'Roboto Mono', sans-serif;
-  font-size: 20px;
-  font-weight: bold;
-}
+// #task-input button:hover {
+//   border: none;
+//   border-radius: 3px;
+//   font-weight: bold;
+//   color: black;
+//   }
 
-#user-input {
-  color: white;
-  background: transparent;
-  border: none;
-  border-bottom: 2px solid white;
-  padding-bottom: 5px;
-  width: 300px;
-  height: 30 px;
-}
+// #todo-list button:hover {
+//   width: 35px;
+//   height: 35px;
+//   background-color: #39ff14;
+//   border: none;
+//   border-radius: 3px;
+//   font-weight: bold;
+//   color: black;
+// }
 
-#task-input button:hover {
-  border: none;
-  border-radius: 3px;
-  font-weight: bold;
-  color: black;
-  }
+// #todo-list button.delete:hover {
+// width: 100px;
+// }
 
-#todo-list button:hover {
-  width: 35px;
-  height: 35px;
-  background-color: #39ff14;
-  border: none;
-  border-radius: 3px;
-  font-weight: bold;
-  color: black;
-}
+// #task-input button{
+//   // color: white;
+//   color: #39ff14;
+//   background-color: transparent;
+//   border: none;
+//   width: 50px;
+//   height: 50px;
+//   font-size: 50px;
+// }
 
-#todo-list button.delete:hover {
-width: 100px;
-}
-#task-input button{
-  // color: white;
-  color: #39ff14;
-  background-color: transparent;
-  border: none;
-  width: 50px;
-  height: 50px;
-  font-size: 50px;
-}
-
-.center {
-  padding-top: 10%;
-  padding-bottom: 25%;
-  width: 100%;
-}
+// .center {
+//   padding-top: 10%;
+//   padding-bottom: 25%;
+//   width: 100%;
+// }
 
 // small lime green box "one"
 
@@ -88,9 +72,6 @@ width: 100px;
 //   background: red;
 //   /* more style */
 // }
-input:checked {
-  box-shadow: inset 0 0 0 20px #39ff14;
-}
 
 // triple shadow checkbox
 
@@ -150,7 +131,141 @@ input:checked {
 //     cursor: pointer;
 //     }
 
+nav {
+  width: 100%;
+  height: 175px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  background-color: #39ff14;
+}
 
+nav span {
+  margin-left: 0.5em;
+  color: white;
+  font-size: 500%;
+}
 
+nav button {
+  margin-right: 2em;
+}
 
+// container for user input
+header {
+  margin-top: 185px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #39ff14;
+  font-family: 'Roboto Mono', sans-serif;
+  font-size: 35px;
+  font-weight: bold;
+}
 
+header label {
+  margin: 0;
+  white-space: nowrap;
+}
+
+header form {
+  width: 90%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header form div {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+header form input {
+  width: 90%;
+  display: flex;
+  color: #39ff14;
+  background: none;
+  border: none;
+  overflow: none;
+  outline: none;
+  box-shadow: none;
+  border-bottom: 3px solid #39ff14;
+}
+
+header form button {
+  color: #39ff14;
+  background: none;
+  border: none;
+  width: 105px;
+}
+
+header form button:hover {
+  color: white;
+}
+
+// container for everything other than input
+main {
+  width: 100%;
+  margin: 1em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+// container for todo list
+main .list {
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  color: #39ff14;
+  font-family: 'Roboto Mono', sans-serif;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+// container for each task
+main article {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  overflow: hidden;
+}
+
+main article div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+main article button {
+  background: none;
+  color: #39ff14;
+  border: none;
+  width: 45px;
+  height: 30px;
+  margin: 0;
+  margin-left: 5px;
+}
+
+main article button:hover {
+  color: white;
+  border: none;
+}
+
+main article button[name="delete-task"]:hover {
+  color: red;
+}
+
+input[type="checkbox"] {
+  -webkit-appearance: none;
+  background: white;
+  width: 20px;
+  height: 20px;
+  margin-right: 0.5em;
+}
+
+input:checked {
+  box-shadow: inset 0 0 0 20px #39ff14;
+}
