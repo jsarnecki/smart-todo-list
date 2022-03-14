@@ -28,12 +28,22 @@ body {
 //   align-items: flex-start;
 // }
 
+<<<<<<< HEAD
 // #task-input button:hover {
 //   border: none;
 //   border-radius: 3px;
 //   font-weight: bold;
 //   color: black;
 //   }
+=======
+#user-input {
+  color: white;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid white;
+  line-height: 70%;
+}
+>>>>>>> c5fdea6676addc744a638b1b4683174a6c6b59ac
 
 // #todo-list button:hover {
 //   width: 35px;
@@ -49,6 +59,7 @@ body {
 // width: 100px;
 // }
 
+<<<<<<< HEAD
 // #task-input button{
 //   // color: white;
 //   color: #39ff14;
@@ -64,6 +75,27 @@ body {
 //   padding-bottom: 25%;
 //   width: 100%;
 // }
+=======
+#todo-list button.delete:hover {
+width: 100px;
+}
+#task-input button{
+  // color: white;
+  color: #39ff14;
+  background-color: transparent;
+  border: none;
+  width: 45px;
+  height: 45px;
+  font-size: 35px;
+  display: inline-block;
+}
+
+.center {
+  padding-top: 10%;
+  padding-bottom: 35%;
+  height: 10px;
+}
+>>>>>>> c5fdea6676addc744a638b1b4683174a6c6b59ac
 
 // small lime green box "one"
 
