@@ -39,7 +39,7 @@ const addTask = (db, user_id, query) => {
 
   return checkCategory(query)
     .then((category) => {
-      const values = [user_id, query, category, new Date(), false];
+      const values = [user_id, query, category, null, 0];
 
       db.query(queryString, values)
         .then((res) => {
