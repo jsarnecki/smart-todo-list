@@ -6,6 +6,6 @@ CREATE TABLE tasks (
   user_id INTEGER REFERENCES users(id),
   description TEXT,
   category VARCHAR(255) NOT NULL,
-  is_complete BOOLEAN NOT NULL,
+  is_complete SMALLINT NOT NULL,
   date_completed DATE
 );
