@@ -33,7 +33,7 @@ $(document).ready(function() {
   $(document).on("click", "[name='delete-task']", function() {
     const task_id = $(this).parent().children("label").attr("name");
 
-    $.post(`/api/tasks/update/delete/${task_id}`)
+    $.post(`/api/tasks/delete/${task_id}`)
       .then((res) => {
         $(this).closest("article").remove();
       })
@@ -52,12 +52,4 @@ $(document).ready(function() {
     const task_id = $(this).parent().children("label").attr("name");
     $.post(`/api/tasks/update/complete/${task_id}`);
   });
-
-  // $("#create-task").submit(function(event) {
-  //   $.post("/api/tasks/")
-  //     .then((data) => {
-  //       console.log(data);
-  //       renderList(data.tasks.slice(-1));
-  //     })
-  // });
 });
