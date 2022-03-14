@@ -1,15 +1,50 @@
+/*
+ * All routes for Widgets are defined here
+ * Since this file is loaded in server.js into api/widgets,
+ *   these routes are mounted onto /widgets
+ * See: https://expressjs.com/en/guide/using-middleware.html#middleware.router
+ */
+
 const express = require('express');
-const taskRoutes = express.Router();
+const router  = express.Router();
 
-module.exports = function() {
+const { addTask, deleteTask, recategorizeTask, completeTask } = require("../database");
 
-  taskRoutes.post("/", function(req, res) {
-    console.log(req.body)
-    if (!req.body.text) {
-      res.status(400).json({ error: 'invalid request: no data in POST body'});
-      return;
-    }
-    res.redirect("/")
-  })
-  return taskRoutes;
-}
+module.exports = (db) => {
+  router.get("/", (req, res) => {
+    let query = `SELECT * FROM tasks ORDER BY id;`;
+    console.log(query);
+    db.query(query)
+      .then(data => {
+        const tasks = data.rows;
+        res.json({ tasks });
+      })
+      .catch(err => {
+        res
+          .status(500)
+          .json({ error: err.message });
+      });
+  });
+
+  router.post("/new", (req, res) => {
+    addTask(db, 1, req.body.text);
+    res.redirect("/");
+  });
+
+  router.post("/delete/:id", (req, res) => {
+    deleteTask(db, req.params.id);
+    res.redirect("/");
+  });
+
+  router.post("/update/category/:id", (req, res) => {
+    recategorizeTask(db, req.params.id);
+    res.redirect("/");
+  });
+
+  router.post("/update/complete/:id", (req, res) => {
+    completeTask(db, req.params.id);
+    res.redirect("/");
+  });
+
+  return router;
+};

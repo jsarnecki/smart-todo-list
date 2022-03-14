@@ -26,35 +26,23 @@
 
 </head>
 <body>
-      <!-- input box and settings -->
-      <section id="task-input">
-        <form class="task" method="post" action="/api/tasks/new">
-          <label class="todo" for="user-input">Whatodo</label>
-          <div class="center">
-          <textarea name="text" id="user-input"></textarea>
-          <button type="submit" id="load-task"class="fa-solid fa-plus"></button>
-        </div>
-        </form>
-      </section>
-
-      <!-- main content here -->
-      <main>
-        <section id="todo-list">
-          <article>
-            <input id="checkbox" type="checkbox"> <label for="checkbox">Task Description</label>
-            <!-- <input id="checkbox" type="checkbox" name="complete-task">
-            <label>Task Description</label> -->
-            <button id="eat" class="fa-solid fa-utensils"></button>
-            <button id="watch" class="fa-solid fa-video"></button>
-            <button id="read" class="fa-solid fa-book-open"></button>
-            <button id="buy" class="fa-solid fa-cart-shopping"></button>
-            <!-- <button name="change-category">Category</button> -->
-            <button id="delete" class="fa-solid fa-trash"></delete>
-          </article>
-        </section>
-      </main>
-    </body>
-  </html>
+  <!-- input box and settings -->
+  <nav>
+    <span>TO-DO LIST</span>
+    <button>DropDown</button>
+  </nav>
+  <header id="task-input">
+    <form method="post" action="/api/tasks/new">
+      <input name="text" id="user-input" autocomplete="off"></input>
+      <button type="submit" id="load-task">ADD</button>
+    </form>
+  </header>
+  <!-- main content here -->
+  <main>
+    <section class="list" id="todo-list"></section>
+  </main>
+</body>
+</html>
 
 
 
