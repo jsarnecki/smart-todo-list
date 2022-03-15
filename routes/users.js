@@ -8,19 +8,11 @@ const bcrypt = require('bcryptjs');
 const express = require('express');
 const router  = express.Router();
 
-/*
-id: 1,
-username: "katstratford",
-email: "katstratford@email.com",
-password: "1234"
-*/
-
 module.exports = (db) => {
   router.post("/login", (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
 
-    //Maybe make condition to check if it's hashed password or not.
     const query = `SELECT id, username, password FROM users WHERE email = $1;`;
     const params = [email];
 
@@ -32,7 +24,7 @@ module.exports = (db) => {
         }
         if (data.rows[0].id <= 3 && data.rows[0].password !== password) {
           //Checks nonhashed passwords of built in users
-          return res.status(400).send('Error: Invalid user login');
+          return res.status(400).send('Error: Invalid user password');
         }
         if (data.rows[0].id > 3 && !bcrypt.compareSync(password, data.rows[0].password)) {
           //Above id# 3 as they are the built in users without a hashed password
@@ -70,11 +62,10 @@ module.exports = (db) => {
     //psql query to grab all users, test against new email/username
     db.query(query)
       .then(data => {
+
         const userData = data.rows;
-        //console.log(userData, Array.isArray(userData));
-        //Test against db to make sure the email/username is not in use
         for (const user of userData) {
-          //console.log(user.email, user.email === newEmail);
+          //Test against db to make sure the email/username is not in use
           if (user.email === newEmail) {
             res.status(400).send('404 Error: Email already in use');
             return;
@@ -82,7 +73,7 @@ module.exports = (db) => {
           if (user.username === newUsername) {
             return res.status(400).send('404 Error: Username already in use');
           }
-        }
+        };
 
         const query2 = `INSERT INTO users (username, email, password) VALUES ($1, $2, $3);`;
         const params2 = [newUsername, newEmail, hashedPassword];
@@ -91,13 +82,13 @@ module.exports = (db) => {
         db.query(query2, params2)
           .then(() => {
 
+            //Select new user from db to set the id to the cookie
             const query3 = `SELECT * FROM users WHERE email = $1;`
             const params3 = [newEmail];
 
             db.query(query3, params3)
             .then(data => {
               const newUser = data.rows[0];
-              console.log(newUser);
               //set cookies
               req.session.user_id = newUser.id;
               req.session.username = newUser.username;
