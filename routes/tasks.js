@@ -29,8 +29,11 @@ module.exports = (db) => {
   });
 
   router.post("/new", (req, res) => {
-    addTask(db, 1, req.body.text);
-    res.redirect("/");
+    const user_id = req.session.user_id;
+    addTask(db, user_id, req.body.text)
+      .then(() => {
+        res.redirect("/");
+      })
   });
 
   router.post("/delete/:id", (req, res) => {

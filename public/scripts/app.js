@@ -6,17 +6,17 @@ const renderList = (tasks) => {
   }
 }
 
+const icons = {
+  eat: "utensils",
+  watch: "video",
+  read: "book-open",
+  buy: "cart-shopping",
+  none: "question"
+}
+
 const makeListTask = (taskInfo) => {
   let checked = "";
   taskInfo.is_complete ? checked = " checked" : null;
-
-  const icons = {
-    eat: "utensils",
-    watch: "video",
-    read: "book-open",
-    buy: "cart-shopping",
-    none: "question"
-  }
 
   const $task = `
   <article>
@@ -76,8 +76,13 @@ $(document).ready(function() {
 
     $.post(`/api/tasks/update/category/${task_id}`)
       .then((res) => {
-        $("#todo-list").empty();
-        loadList();
+        const currentIcon = $($(this).children("i")).attr("class").slice(12).split(" ").slice(0)[0];
+
+        let index = Object.values(icons).indexOf(currentIcon);
+        index + 1 > 4 ? index = 0 : index++;
+
+        const newIcon = `fa-solid fa-${Object.values(icons)[index]} fa-lg`
+        $($(this).children("i")).attr("class", newIcon);
       });
   });
 
