@@ -29,8 +29,8 @@ module.exports = (db) => {
           res.status(400).send('Error: Invalid user login');
           return;
         }
-        res.cookie('userId', data.rows[0].id);
         const user_id = data.rows[0].id;
+        req.session.user_id = user_id;
         res.render("index", { user_id });
       })
       .catch(err => {
