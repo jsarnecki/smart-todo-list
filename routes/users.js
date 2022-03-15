@@ -8,12 +8,30 @@
 const express = require('express');
 const router  = express.Router();
 
+/*
+id: 1,
+username: "katstratford",
+email: "katstratford@email.com",
+password: "1234"
+*/
+
 module.exports = (db) => {
-  router.get("/", (req, res) => {
-    db.query(`SELECT * FROM users;`)
+  router.post("/login", (req, res) => {
+    const email = req.body.email;
+    const password = req.body.password;
+    const query = `SELECT id, username FROM users WHERE email = $1 AND password = $2;`;
+    const params = [email, password];
+
+    db.query(query, params)
       .then(data => {
-        const users = data.rows;
-        res.json({ users });
+        console.log(data.rows);
+        if (!data.rows.length) {
+          res.status(400).send('Error: Invalid user login');
+          return;
+        }
+        req.session.user_id = data.rows[0].id;
+        req.session.username = data.rows[0].username;
+        res.redirect("/");
       })
       .catch(err => {
         res
@@ -21,5 +39,11 @@ module.exports = (db) => {
           .json({ error: err.message });
       });
   });
+
+  router.post("/logout", (req, res) => {
+    req.session = null;
+    res.redirect("/");
+  })
+
   return router;
 };
