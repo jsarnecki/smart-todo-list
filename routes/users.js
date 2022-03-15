@@ -43,7 +43,44 @@ module.exports = (db) => {
   router.post("/logout", (req, res) => {
     req.session = null;
     res.redirect("/");
-  })
+  });
+
+  router.post("/register", (req, res) => {
+    const newEmail = req.body.email;
+    const newPassword = req.body.password;
+    const newUsername = req.body.username;
+
+    if (!newEmail || !newPassword || !newUsername) {
+      return res.status(400).send('404 Error: Must fill in all inputs');
+    }
+
+    const query = `SELECT * FROM users;`
+
+    //psql query to grab all users, test against new email/username
+    db.query(query)
+      .then(data => {
+        const userData = data.rows;
+        console.log(userData, Array.isArray(userData));
+        //Test against db to make sure the email/username is not in use
+        //bcrytp...
+        for (const user of userData) {
+          console.log(user.email, user.email === newEmail);
+          if (user.email === newEmail) {
+            res.status(400).send('404 Error: Email already in use');
+            return;
+          }
+          if (user.username === newUsername) {
+            return res.status(400).send('404 Error: Username already in use');
+          }
+        }
+        //set the cookie with the new id
+        res.redirect("/");
+      })
+
+
+    console.log(newEmail, newPassword, newUsername);
+
+  });
 
   return router;
 };
