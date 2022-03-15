@@ -12,9 +12,11 @@ const { addTask, deleteTask, recategorizeTask, completeTask } = require("../data
 
 module.exports = (db) => {
   router.get("/", (req, res) => {
-    let query = `SELECT * FROM tasks ORDER BY id;`;
-    console.log(query);
-    db.query(query)
+    const user_id = req.session.user_id;
+    let query = "SELECT * FROM tasks ";
+    user_id ? query += "WHERE user_id = $1 ORDER BY id;" : query += "ORDER BY id;";
+
+    db.query(query, [user_id])
       .then(data => {
         const tasks = data.rows;
         res.json({ tasks });

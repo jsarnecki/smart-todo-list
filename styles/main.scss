@@ -18,9 +18,16 @@ nav {
   border: 3px solid #39ff14;
 }
 
+// offset whole page to account for fixed nav
+.offset {
+  position: relative;
+  margin-bottom: 38px;
+}
+
 nav div {
   display: flex;
   flex-direction: row;
+  align-items: center;
   font-size: 250%;
 }
 
@@ -45,7 +52,6 @@ nav div button:hover {
   width: 90%;
   displaY: flex;
   justify-content: center;
-  margin-top: 155px;
   padding: 1em 0;
   border: 3px solid #39ff14;
 }
@@ -86,12 +92,12 @@ nav div button:hover {
 // container for everything other than nav and login stuff
 main {
   width: 90%;
-  margin-top: 2em;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   border: 3px solid #39ff14;
+  margin-bottom: 32px;
 }
 
 // container for user input
