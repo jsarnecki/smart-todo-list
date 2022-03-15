@@ -1,17 +1,198 @@
 body {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  font-family: 'Roboto Mono', sans-serif;
   align-items: center;
   min-height: 100vh;
+  background: black;
+}
 
-  background: rgb(163, 208, 219);
-  background: linear-gradient(
-    227deg,
-    rgba(163, 208, 219, 1) 0%,
-    rgba(163, 176, 219, 1) 20%,
-    rgba(163, 173, 219, 1) 34%,
-    rgba(163, 219, 208, 1) 59%,
-    rgba(163, 208, 219, 1) 74%,
-    rgba(163, 208, 219, 1) 100%
-  );
+nav {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+}
+
+nav .menu {
+  width: 100%;
+  height: 100px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+nav .menu .nav-buttons {
+  display: flex;
+}
+
+nav .menu p {
+  color:#39ff14;
+  margin-left: 0.5em;
+  font-family: 'Roboto Mono', sans-serif;
+  font-size: 250%;
+  font-weight: bold;
+}
+
+nav .menu button {
+  font-size: 250%;
+  background: none;
+  border: none;
+  color:#39ff14;
+}
+
+nav .menu button:hover {
+  color: white;
+}
+
+// login/register
+.user-input form {
+  margin-top: 100px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  font-size: large;
+  color: #39ff14;
+}
+
+.user-input form input {
+  margin: 0.25em 0;
+  margin-left: 1em;
+  background: black;
+  color: #39ff14;
+  background: none;
+  border: none;
+  overflow: none;
+  outline: none;
+  box-shadow: none;
+  border-bottom: 3px solid #39ff14;
+  color: #39ff14;
+}
+
+.user-input form button {
+  margin-left: 1em;
+  background-color: #39ff14;
+  color: white;
+  font-size: large;
+}
+
+// container for user input
+.task-input {
+  margin-top: 120px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #39ff14;
+  font-family: 'Roboto Mono', sans-serif;
+  font-size: 250%;
+  font-weight: bold;
+}
+
+.task-input form {
+  width: 90%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.task-input p {
+  margin: 0;
+  margin-right: 0.35em;
+}
+
+.task-input form div {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.task-input form input {
+  width: 100%;
+  display: flex;
+  color: #39ff14;
+  background: none;
+  border: none;
+  overflow: none;
+  outline: none;
+  box-shadow: none;
+  border-bottom: 3px solid #39ff14;
+}
+
+.task-input form button {
+  width: 85px;
+  color: #39ff14;
+  border: none;
+  background: none;
+  margin: 0 0.5em;
+}
+
+.task-input form button:hover {
+  color: white;
+}
+
+// container for everything other than input
+main {
+  width: 100%;
+  margin-top: 1.5em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+// container for todo list
+main .list {
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  color: #39ff14;
+  font-family: 'Roboto Mono', sans-serif;
+  font-size: 250%;
+  font-weight: bold;
+}
+
+// container for each task
+main article {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0.25em 0;
+}
+
+main article div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+main article button {
+  width: 65px;
+  color: #39ff14;
+  border: none;
+  background: none;
+  margin: 0 0.5em;
+}
+
+main article button:hover {
+  color: white;
+  border: none;
+}
+
+main article button[name="delete-task"]:hover {
+  color: red;
+}
+
+input[type="checkbox"] {
+  -webkit-appearance: none;
+  background: white;
+  width: 45px;
+  height: 45px;
+  margin: 0 0.5em;
+  margin-right: 0.75em;
+}
+
+input:checked {
+  box-shadow: inset 0 0 0 25px #39ff14;
 }
