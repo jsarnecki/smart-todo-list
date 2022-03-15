@@ -1,65 +1,64 @@
 body {
   display: flex;
   flex-direction: column;
-  font-family: 'Roboto Mono', sans-serif;
   align-items: center;
+  font-family: 'Roboto Mono', sans-serif;
   min-height: 100vh;
   background: black;
 }
 
+// fixed navbar
 nav {
   width: 100%;
+  height: 125px;
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
   align-items: center;
   position: fixed;
+  background-color: black;
+  border: 3px solid #39ff14;
 }
 
-nav .menu {
-  width: 100%;
-  height: 100px;
+nav div {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: row;
+  font-size: 250%;
 }
 
-nav .menu .nav-buttons {
-  display: flex;
-}
-
-nav .menu p {
+nav div p {
   color:#39ff14;
   margin-left: 0.5em;
-  font-family: 'Roboto Mono', sans-serif;
-  font-size: 250%;
+  display: flex;
   font-weight: bold;
 }
 
-nav .menu button {
-  font-size: 250%;
+nav div button {
   background: none;
   border: none;
   color:#39ff14;
 }
 
-nav .menu button:hover {
+nav div button:hover {
   color: white;
 }
 
-// login/register
+.user-input {
+  width: 90%;
+  displaY: flex;
+  justify-content: center;
+  margin-top: 155px;
+  padding: 1em 0;
+  border: 3px solid #39ff14;
+}
+
 .user-input form {
-  margin-top: 100px;
-  width: 100%;
+  width: 95%;
   display: flex;
   flex-direction: column;
-  font-size: large;
   color: #39ff14;
+  font-size: 150%;
 }
 
 .user-input form input {
-  margin: 0.25em 0;
-  margin-left: 1em;
   background: black;
   color: #39ff14;
   background: none;
@@ -68,45 +67,53 @@ nav .menu button:hover {
   outline: none;
   box-shadow: none;
   border-bottom: 3px solid #39ff14;
-  color: #39ff14;
 }
 
 .user-input form button {
-  margin-left: 1em;
-  background-color: #39ff14;
-  color: white;
-  font-size: large;
+  display: flex;
+  background-color: black;
+  border-color: #39ff14;
+  color: #39ff14;
+  font-weight: bold;
+  margin-top: 1em;
+}
+
+.user-input form button:hover {
+  color: #1e8a0b;
+  border-color: #1e8a0b;
+}
+
+// container for everything other than nav and login stuff
+main {
+  width: 90%;
+  margin-top: 2em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 3px solid #39ff14;
 }
 
 // container for user input
 .task-input {
-  margin-top: 120px;
   width: 100%;
   display: flex;
   justify-content: center;
-  align-items: center;
   color: #39ff14;
-  font-family: 'Roboto Mono', sans-serif;
   font-size: 250%;
-  font-weight: bold;
+  margin-top: 0.5em;
+  margin-bottom: 1em;
 }
 
 .task-input form {
-  width: 90%;
+  width: 95%;
   display: flex;
-  justify-content: space-between;
   align-items: center;
 }
 
 .task-input p {
   margin: 0;
   margin-right: 0.35em;
-}
-
-.task-input form div {
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
 }
 
 .task-input form input {
@@ -121,36 +128,18 @@ nav .menu button:hover {
   border-bottom: 3px solid #39ff14;
 }
 
-.task-input form button {
-  width: 85px;
-  color: #39ff14;
-  border: none;
-  background: none;
-  margin: 0 0.5em;
-}
-
 .task-input form button:hover {
   color: white;
 }
 
-// container for everything other than input
-main {
-  width: 100%;
-  margin-top: 1.5em;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 // container for todo list
 main .list {
-  width: 90%;
+  width: 95%;
   display: flex;
   flex-direction: column;
   color: #39ff14;
-  font-family: 'Roboto Mono', sans-serif;
-  font-size: 250%;
-  font-weight: bold;
+  font-size: 200%;
+  padding-bottom: 0.5em;
 }
 
 // container for each task
@@ -158,7 +147,7 @@ main article {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 0.25em 0;
+  margin-bottom: 0.25em;
 }
 
 main article div {
@@ -176,19 +165,20 @@ main article button {
 }
 
 main article button:hover {
-  color: white;
+  color: #1e8a0b;
   border: none;
 }
 
 main article button[name="delete-task"]:hover {
-  color: red;
+  color: #FF3131;
 }
 
 input[type="checkbox"] {
   -webkit-appearance: none;
-  background: white;
-  width: 45px;
-  height: 45px;
+  background: black;
+  border: 4px solid #39ff14;
+  width: 25px;
+  height: 25px;
   margin: 0 0.5em;
   margin-right: 0.75em;
 }

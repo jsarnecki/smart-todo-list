@@ -28,33 +28,33 @@
 <body>
   <!-- input box and settings -->
   <nav>
-    <div class="menu">
-      <div class="nav-buttons">
-        <p>todo-list</p>
-        <button>/login</button>
-      </div>
+    <div>
+      <p>todo-list</p>
+      <button>/login</button>
     </div>
   </nav>
+  <!-- login/register form-->
   <header class="user-input">
     <form method="post" action="/api/users/login">
       <div>
-        <label>Email Address</label>
-        <input type="email" name="email" placeholder="Email Address" autocomplete="off">
+        <label>/email_address$</label>
+        <input type="email" name="email" autocomplete="off">
       </div>
       <div>
-        <label>Password</label>
-        <input type="password" name="password" placeholder="Password" autocomplete="off">
+        <label>/password$</label>
+        <input type="password" name="password" autocomplete="off">
       </div>
-    </form>
-  </header>
-  <header class="task-input">
-    <form method="post" action="/api/tasks/new">
-      <p>/list$</p>
-      <input name="text" id="user-input" autocomplete="off"></input>
+      <button type="submit">Login</button>
     </form>
   </header>
   <!-- main content here -->
   <main>
+    <header class="task-input">
+      <form method="post" action="/api/tasks/new">
+        <p>/list$</p>
+        <input name="text" id="user-input" autocomplete="off"></input>
+      </form>
+    </header>
     <section class="list" id="todo-list"></section>
   </main>
 </body>
