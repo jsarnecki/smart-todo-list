@@ -26,12 +26,19 @@
 
 </head>
 <body>
+  <nav style="position:relative"></nav>
   <!-- input box and settings -->
   <nav>
     <div>
-      <p>todo-list</p>
-      <button>/login</button>
-      <button method="post" action="/api/users/logout">/logout</button>
+      <% if (username) { %>
+        <p><%= username %>/todo_list</p>
+        <form method="post" action="/api/users/logout">
+          <button>/logout</button>
+        </form>
+      <% } else { %>
+        <p>todo_list</p>
+        <button id="swap-action">/login</button>
+      <% } %>
     </div>
   </nav>
   <!-- login/register form-->
@@ -49,17 +56,18 @@
         <button type="submit">Login</button>
       </form>
     </header>
-  <% } %>
+  <% } else { %>
   <!-- main content here -->
-  <main>
-    <header class="task-input">
-      <form method="post" action="/api/tasks/new">
-        <p>/add$</p>
-        <input name="text" id="user-input" autocomplete="off"></input>
-      </form>
-    </header>
-    <section class="list" id="todo-list"></section>
-  </main>
+    <main>
+      <header class="task-input">
+        <form method="post" action="/api/tasks/new">
+          <p>/add$</p>
+          <input name="text" id="user-input" autocomplete="off"></input>
+        </form>
+      </header>
+      <section class="list" id="todo-list"></section>
+    </main>
+  <% } %>
 </body>
 </html>
 

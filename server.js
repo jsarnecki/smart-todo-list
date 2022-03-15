@@ -23,6 +23,7 @@ app.use(morgan("dev"));
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieSession({
   user_id: "",
+  email: "",
   keys: ["12345", "abcde"]
 }));
 
@@ -54,7 +55,8 @@ app.use("/api/tasks", tasksRoutes(db));
 
 app.get("/", (req, res) => {
   const user_id = req.session.user_id;
-  res.render("index", { user_id });
+  const username = req.session.username;
+  res.render("index", { user_id, username });
 });
 
 app.listen(PORT, () => {

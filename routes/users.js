@@ -19,7 +19,7 @@ module.exports = (db) => {
   router.post("/login", (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
-    const query = `SELECT id FROM users WHERE email = $1 AND password = $2;`;
+    const query = `SELECT id, username FROM users WHERE email = $1 AND password = $2;`;
     const params = [email, password];
 
     db.query(query, params)
@@ -30,6 +30,7 @@ module.exports = (db) => {
           return;
         }
         req.session.user_id = data.rows[0].id;
+        req.session.username = data.rows[0].username;
         res.redirect("/");
       })
       .catch(err => {
