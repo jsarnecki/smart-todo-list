@@ -19,6 +19,8 @@ module.exports = (db) => {
   router.post("/login", (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
+
+    //Maybe make condition to check if it's hashed password or not.
     const query = `SELECT id, username FROM users WHERE email = $1 AND password = $2;`;
     const params = [email, password];
 
@@ -53,10 +55,9 @@ module.exports = (db) => {
     if (!newEmail || !newPassword || !newUsername) {
       return res.status(400).send('404 Error: Must fill in all inputs');
     }
+
     //bcrytp...
     const hashedPassword = bcrypt.hashSync(newPassword, 10);
-
-
     const query = `SELECT * FROM users;`
 
     //psql query to grab all users, test against new email/username
@@ -79,10 +80,28 @@ module.exports = (db) => {
         const query2 = `INSERT INTO users (username, email, password) VALUES ($1, $2, $3);`;
         const params2 = [newUsername, newEmail, hashedPassword];
         //When hashed password is all good, add the new user to the db
+
         db.query(query2, params2)
-          .then(data => {
-            const users = data.rows;
-            res.json({ users });
+          .then(() => {
+
+            const query3 = `SELECT * FROM users WHERE email = $1;`
+            const params3 = [newEmail];
+
+            db.query(query3, params3)
+            .then(data => {
+              const newUser = data.rows[0];
+              console.log(newUser);
+              //set cookies
+              req.session.user_id = newUser.id;
+              req.session.username = newUser.username;
+              res.redirect("/");
+            })
+            .catch(err => {
+              res
+                .status(500)
+                .json({ error: err.message });
+            });
+
           })
           .catch(err => {
             res
@@ -90,10 +109,7 @@ module.exports = (db) => {
               .json({ error: err.message });
           });
 
-        //set the cookie with the new id
-        //res.redirect("/");
       })
-
 
     console.log(newEmail, newPassword, newUsername);
 
