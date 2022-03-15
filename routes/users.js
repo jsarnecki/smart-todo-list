@@ -7,8 +7,6 @@
 
 const express = require('express');
 const router  = express.Router();
-const cookieParser = require('cookie-parser');
-router.use(cookieParser());
 
 /*
 id: 1,
@@ -27,17 +25,14 @@ module.exports = (db) => {
     db.query(query, params)
       .then(data => {
         console.log(data.rows);
-        if (data.rows.length === 0) {
+        if (!data.rows.length) {
           res.status(400).send('Error: Invalid user login');
           return;
         }
         res.cookie('userId', data.rows[0].id);
-
-        //const data = JSON.parse(data);
-        // const users = data.rows;
-        // res.json({ users });
-
-        res.redirect("/");
+        const user_id = data.rows[0].id;
+        const email = null;
+        res.redirect("index", { user_id, email });
       })
       .catch(err => {
         res
