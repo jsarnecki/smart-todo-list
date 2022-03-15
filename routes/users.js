@@ -21,15 +21,22 @@ module.exports = (db) => {
     const password = req.body.password;
 
     //Maybe make condition to check if it's hashed password or not.
-    const query = `SELECT id, username FROM users WHERE email = $1 AND password = $2;`;
-    const params = [email, password];
+    const query = `SELECT id, username, password FROM users WHERE email = $1;`;
+    const params = [email];
 
     db.query(query, params)
       .then(data => {
         console.log(data.rows);
         if (!data.rows.length) {
-          res.status(400).send('Error: Invalid user login');
-          return;
+          return res.status(400).send('Error: Invalid user login');
+        }
+        if (data.rows[0].id <= 3 && data.rows[0].password !== password) {
+          //Checks nonhashed passwords of built in users
+          return res.status(400).send('Error: Invalid user login');
+        }
+        if (data.rows[0].id > 3 && !bcrypt.compareSync(password, data.rows[0].password)) {
+          //Above id# 3 as they are the built in users without a hashed password
+          return res.status(400).send('Error: Invalid password');
         }
         req.session.user_id = data.rows[0].id;
         req.session.username = data.rows[0].username;
