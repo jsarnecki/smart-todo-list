@@ -42,6 +42,25 @@ const loadList = () => {
 
 $(document).ready(function() {
   loadList();
+  $("#username-input").hide();
+
+  $("#swap-button").click(function() {
+    let action = $(this).html();
+
+    if (action === "/login") {
+      $("#username-input").show();
+      action = "/register"
+    } else {
+      $("#username-input").hide();
+      action = "/login"
+    }
+
+    const html = action.charAt(1).toUpperCase() + action.slice(2);
+
+    $("#login-register").parent().attr("action", `/api/users${action}`);
+    $(this).html(action);
+    $("#login-register").html(html);
+  });
 
   $(document).on("click", "[name='delete-task']", function() {
     const task_id = $($(this).closest("article").children("div").children("label")[0]).attr("name");

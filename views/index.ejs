@@ -37,7 +37,7 @@
         </form>
       <% } else { %>
         <p>todo_list</p>
-        <button id="swap-action">/login</button>
+        <button id="swap-button">/login</button>
       <% } %>
     </div>
   </nav>
@@ -45,6 +45,10 @@
   <% if (!user_id) {%>
     <header class="user-input">
       <form method="post" action="/api/users/login">
+        <div id="username-input">
+          <label>/username$</label>
+          <input type="text" name="username" autocomplete="off">
+        </div>
         <div>
           <label>/email_address$</label>
           <input type="email" name="email" autocomplete="off">
@@ -53,7 +57,7 @@
           <label>/password$</label>
           <input type="password" name="password" autocomplete="off">
         </div>
-        <button type="submit">Login</button>
+        <button id="login-register" type="submit">Login</button>
       </form>
     </header>
   <% } else { %>
