@@ -25,8 +25,8 @@ const makeListTask = (taskInfo) => {
       <label name="${taskInfo.id}">${taskInfo.description}</label>
     </div>
     <div>
-      <button name="change-category" class="fa-solid fa-${icons[taskInfo.category]} fa-lg"></button>
-      <button name="delete-task" class="fa-solid fa-trash fa-lg"></button>
+      <button name="change-category"><i class="fa-solid fa-${icons[taskInfo.category]} fa-lg"></i></button>
+      <button name="delete-task"><i class="fa-solid fa-trash fa-lg"></i></button>
     </div>
   </article>
   `;

@@ -28,13 +28,29 @@
 <body>
   <!-- input box and settings -->
   <nav>
-    <span>TO-DO LIST</span>
-    <button>DropDown</button>
+    <div class="menu">
+      <div class="nav-buttons">
+        <p>todo-list</p>
+        <button>/login</button>
+      </div>
+    </div>
   </nav>
-  <header id="task-input">
+  <header class="user-input">
+    <form method="post" action="/api/users/login">
+      <div>
+        <label>Email Address</label>
+        <input type="email" name="email" placeholder="Email Address" autocomplete="off">
+      </div>
+      <div>
+        <label>Password</label>
+        <input type="password" name="password" placeholder="Password" autocomplete="off">
+      </div>
+    </form>
+  </header>
+  <header class="task-input">
     <form method="post" action="/api/tasks/new">
+      <p>/list$</p>
       <input name="text" id="user-input" autocomplete="off"></input>
-      <button type="submit" id="load-task">ADD</button>
     </form>
   </header>
   <!-- main content here -->

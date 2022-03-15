@@ -7,215 +7,110 @@ body {
   background: black;
 }
 
-// .task {
-//   display: flex;
-//   flex-direction: column;
-//   align-items: center;
-// }
-
-// .todo {
-//  color: white;
-//  padding-top: 25px;
-//  font-family: 'Roboto Mono', sans-serif;
-//  font-size: 50px;
-//  display: flex;
-//  justify-content: flex-start;
-// }
-
-// #task-input {
-//   display: flex;
-//   flex-direction: column;
-//   align-items: flex-start;
-// }
-
-<<<<<<< HEAD
-// #task-input button:hover {
-//   border: none;
-//   border-radius: 3px;
-//   font-weight: bold;
-//   color: black;
-//   }
-=======
-#user-input {
-  color: white;
-  background: transparent;
-  border: none;
-  border-bottom: 2px solid white;
-  line-height: 70%;
-}
->>>>>>> c5fdea6676addc744a638b1b4683174a6c6b59ac
-
-// #todo-list button:hover {
-//   width: 35px;
-//   height: 35px;
-//   background-color: #39ff14;
-//   border: none;
-//   border-radius: 3px;
-//   font-weight: bold;
-//   color: black;
-// }
-
-// #todo-list button.delete:hover {
-// width: 100px;
-// }
-
-<<<<<<< HEAD
-// #task-input button{
-//   // color: white;
-//   color: #39ff14;
-//   background-color: transparent;
-//   border: none;
-//   width: 50px;
-//   height: 50px;
-//   font-size: 50px;
-// }
-
-// .center {
-//   padding-top: 10%;
-//   padding-bottom: 25%;
-//   width: 100%;
-// }
-=======
-#todo-list button.delete:hover {
-width: 100px;
-}
-#task-input button{
-  // color: white;
-  color: #39ff14;
-  background-color: transparent;
-  border: none;
-  width: 45px;
-  height: 45px;
-  font-size: 35px;
-  display: inline-block;
-}
-
-.center {
-  padding-top: 10%;
-  padding-bottom: 35%;
-  height: 10px;
-}
->>>>>>> c5fdea6676addc744a638b1b4683174a6c6b59ac
-
-// small lime green box "one"
-
-// input {
-//   transition: box-shadow .3s;
-//   background: red;
-//   /* more style */
-// }
-
-// triple shadow checkbox
-
-// input[type=checkbox]{
-//   display: grid;
-//   width: 100px; height: 70px;
-//   line-height: 60px;
-//   text-align: center;
-//   cursor: pointer;
-//   border: 0;
-//   appearance: none; -webkit-appearance: none;
-//   // height: 30px;
-//   }
-
-//   input[type=checkbox]::before,
-//   input[type=checkbox]::after{
-//   grid-area: 1/1;
-//   border-radius: 40px;
-//   mix-blend-mode: hard-light;
-//   pointer-events: none;
-//   // width: 35%;
-//   // height: 35%;
-//   }
-
-//   input[type=checkbox]::before{
-//   transform: translate(10px, 10px);
-//   background: #39ff14;
-//   // text-indent: -20px;
-//   // font-size: 25px;
-//   font-size: 50px;
-//   content: '✓';
-//   color: white;
-//   }
-
-  // article {
-  //   display: flex;
-  //   flex-direction: row;
-  //   height: 30px;
-  // }
-
-//   input[type=checkbox]::after{
-//   background: blue;
-//   font-size: 50px;
-//   content: '⨯';
-//   color: white;
-//   }
-
-//   input[type=checkbox]:checked::after{
-//   mix-blend-mode: unset;
-//   color: transparent;
-//   }
-
-//   label{
-//     font: 60px Girassol;
-//     color: lime;
-//     text-shadow: 2px 2px 0 blue;
-//     cursor: pointer;
-//     }
-
 nav {
   width: 100%;
-  height: 175px;
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
   align-items: center;
   position: fixed;
-  background-color: #39ff14;
 }
 
-nav span {
+nav .menu {
+  width: 100%;
+  height: 100px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+nav .menu .nav-buttons {
+  display: flex;
+}
+
+nav .menu p {
+  color:#39ff14;
   margin-left: 0.5em;
-  color: white;
-  font-size: 500%;
+  font-family: 'Roboto Mono', sans-serif;
+  font-size: 250%;
+  font-weight: bold;
 }
 
-nav button {
-  margin-right: 2em;
+nav .menu button {
+  font-size: 250%;
+  background: none;
+  border: none;
+  color:#39ff14;
+}
+
+nav .menu button:hover {
+  color: white;
+}
+
+// login/register
+.user-input form {
+  margin-top: 100px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  font-size: large;
+  color: #39ff14;
+}
+
+.user-input form input {
+  margin: 0.25em 0;
+  margin-left: 1em;
+  background: black;
+  color: #39ff14;
+  background: none;
+  border: none;
+  overflow: none;
+  outline: none;
+  box-shadow: none;
+  border-bottom: 3px solid #39ff14;
+  color: #39ff14;
+}
+
+.user-input form button {
+  margin-left: 1em;
+  background-color: #39ff14;
+  color: white;
+  font-size: large;
 }
 
 // container for user input
-header {
-  margin-top: 185px;
+.task-input {
+  margin-top: 120px;
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   color: #39ff14;
   font-family: 'Roboto Mono', sans-serif;
-  font-size: 35px;
+  font-size: 250%;
   font-weight: bold;
 }
 
-header label {
-  margin: 0;
-  white-space: nowrap;
-}
-
-header form {
+.task-input form {
   width: 90%;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-header form div {
+.task-input p {
+  margin: 0;
+  margin-right: 0.35em;
+}
+
+.task-input form div {
   display: flex;
   justify-content: space-evenly;
   align-items: center;
 }
 
-header form input {
-  width: 90%;
+.task-input form input {
+  width: 100%;
   display: flex;
   color: #39ff14;
   background: none;
@@ -226,21 +121,22 @@ header form input {
   border-bottom: 3px solid #39ff14;
 }
 
-header form button {
+.task-input form button {
+  width: 85px;
   color: #39ff14;
-  background: none;
   border: none;
-  width: 105px;
+  background: none;
+  margin: 0 0.5em;
 }
 
-header form button:hover {
+.task-input form button:hover {
   color: white;
 }
 
 // container for everything other than input
 main {
   width: 100%;
-  margin: 1em;
+  margin-top: 1.5em;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -253,7 +149,7 @@ main .list {
   flex-direction: column;
   color: #39ff14;
   font-family: 'Roboto Mono', sans-serif;
-  font-size: 20px;
+  font-size: 250%;
   font-weight: bold;
 }
 
@@ -262,7 +158,7 @@ main article {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  overflow: hidden;
+  margin: 0.25em 0;
 }
 
 main article div {
@@ -272,13 +168,11 @@ main article div {
 }
 
 main article button {
-  background: none;
+  width: 65px;
   color: #39ff14;
   border: none;
-  width: 45px;
-  height: 30px;
-  margin: 0;
-  margin-left: 5px;
+  background: none;
+  margin: 0 0.5em;
 }
 
 main article button:hover {
@@ -293,11 +187,12 @@ main article button[name="delete-task"]:hover {
 input[type="checkbox"] {
   -webkit-appearance: none;
   background: white;
-  width: 20px;
-  height: 20px;
-  margin-right: 0.5em;
+  width: 45px;
+  height: 45px;
+  margin: 0 0.5em;
+  margin-right: 0.75em;
 }
 
 input:checked {
-  box-shadow: inset 0 0 0 20px #39ff14;
+  box-shadow: inset 0 0 0 25px #39ff14;
 }
