@@ -31,8 +31,7 @@ module.exports = (db) => {
         }
         res.cookie('userId', data.rows[0].id);
         const user_id = data.rows[0].id;
-        const email = null;
-        res.redirect("index", { user_id, email });
+        res.render("index", { user_id });
       })
       .catch(err => {
         res
@@ -40,5 +39,11 @@ module.exports = (db) => {
           .json({ error: err.message });
       });
   });
+
+  router.post("/logout", (req, res) => {
+    req.session = null;
+    res.render("index", { user_id: null });
+  })
+
   return router;
 };
