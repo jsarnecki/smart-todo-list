@@ -4,7 +4,7 @@
  *   these routes are mounted onto /users
  * See: https://expressjs.com/en/guide/using-middleware.html#middleware.router
  */
-
+const bcrypt = require('bcryptjs');
 const express = require('express');
 const router  = express.Router();
 
@@ -53,6 +53,9 @@ module.exports = (db) => {
     if (!newEmail || !newPassword || !newUsername) {
       return res.status(400).send('404 Error: Must fill in all inputs');
     }
+    //bcrytp...
+    const hashedPassword = bcrypt.hashSync(newPassword, 10);
+
 
     const query = `SELECT * FROM users;`
 
@@ -60,11 +63,10 @@ module.exports = (db) => {
     db.query(query)
       .then(data => {
         const userData = data.rows;
-        console.log(userData, Array.isArray(userData));
+        //console.log(userData, Array.isArray(userData));
         //Test against db to make sure the email/username is not in use
-        //bcrytp...
         for (const user of userData) {
-          console.log(user.email, user.email === newEmail);
+          //console.log(user.email, user.email === newEmail);
           if (user.email === newEmail) {
             res.status(400).send('404 Error: Email already in use');
             return;
@@ -73,8 +75,23 @@ module.exports = (db) => {
             return res.status(400).send('404 Error: Username already in use');
           }
         }
+
+        const query2 = `INSERT INTO users (username, email, password) VALUES ($1, $2, $3);`;
+        const params2 = [newUsername, newEmail, hashedPassword];
+        //When hashed password is all good, add the new user to the db
+        db.query(query2, params2)
+          .then(data => {
+            const users = data.rows;
+            res.json({ users });
+          })
+          .catch(err => {
+            res
+              .status(500)
+              .json({ error: err.message });
+          });
+
         //set the cookie with the new id
-        res.redirect("/");
+        //res.redirect("/");
       })
 
 
