@@ -29,9 +29,8 @@ module.exports = (db) => {
           res.status(400).send('Error: Invalid user login');
           return;
         }
-        const user_id = data.rows[0].id;
-        req.session.user_id = user_id;
-        res.render("index", { user_id });
+        req.session.user_id = data.rows[0].id;
+        res.redirect("/");
       })
       .catch(err => {
         res
@@ -42,7 +41,7 @@ module.exports = (db) => {
 
   router.post("/logout", (req, res) => {
     req.session = null;
-    res.render("index", { user_id: null });
+    res.redirect("/");
   })
 
   return router;
