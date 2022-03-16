@@ -75,18 +75,11 @@ module.exports = (db) => {
           }
         };
 
-        const query2 = `INSERT INTO users (username, email, password) VALUES ($1, $2, $3);`;
+        const query2 = `INSERT INTO users (username, email, password) VALUES ($1, $2, $3) RETURNING id, username;`;
         const params2 = [newUsername, newEmail, hashedPassword];
         //When hashed password is all good, add the new user to the db
 
-        db.query(query2, params2)
-          .then(() => {
-
-            //Select new user from db to set the id to the cookie
-            const query3 = `SELECT * FROM users WHERE email = $1;`
-            const params3 = [newEmail];
-
-            db.query(query3, params3)
+            db.query(query2, params2)
             .then(data => {
               const newUser = data.rows[0];
               //set cookies
@@ -99,13 +92,6 @@ module.exports = (db) => {
                 .status(500)
                 .json({ error: err.message });
             });
-
-          })
-          .catch(err => {
-            res
-              .status(500)
-              .json({ error: err.message });
-          });
 
       })
 
