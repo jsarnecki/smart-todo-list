@@ -6,7 +6,7 @@ const APIKEY = 'AIzaSyBJ-eqdhdex18EpEdsIFsb-QwoeEauolF0';
 
 const keywords = {
   watch: ["watch", "movie", "creativework", "theatre", "cinema", "film", "tv", "television", "tvseason", "tvseries", "season", "premiered"],
-  eat: ["eat", "event", "place", "food", "restaurant", "organization", "corporation", "dish", "cuisine", "dine", "snack", "appetizer", "recipe", "stadiumorarena"],
+  eat: ["eat", "event", "dinner", "lunch", "place", "food", "restaurant", "organization", "corporation", "dish", "cuisine", "dine", "snack", "appetizer", "recipe", "stadiumorarena"],
   read: ["read", "book", "novel", "fiction", "written", "author"],
   buy: ["buy", "productmodel", "shop", "organization", "corporation"] //thing?
   //"organization", "corporation" - could trip off both eat and buy
@@ -23,7 +23,8 @@ const removePunctuation = function(str) {
 }
 
 const removeConjunctions = function(arr) {
-  const conjunctions = ["the", "a", "an", "and", "or", "that", "as", "than", "so", "since", "is", "of", "are", "in", "be", "also", "by", "him", "her"];
+  const conjunctions = ["the", "a", "an", "and", "or", "that", "as", "than", "so", "since", "is", "of", "are", "in", "be", "also", "by", "him", "her", "on", "either",
+                        "it"];
   const freshArr = [];
   for (const elm of arr) {
     if (!conjunctions.includes(elm.toLowerCase())) {
@@ -115,16 +116,6 @@ const checkCategory = (value) => {
       const data = JSON.parse(res).itemListElement;
       console.log("original data (.itemListElement):", data);
 
-      // if (data[0] === undefined) {
-      //   //redo search with city
-      //   return 'none';
-      //   //But maybe look into figuring out different logic or a different API, different method if we have time
-      // }
-
-      for (let elm of data[0].result['@type']) {
-        console.log("here is an elm of types:", elm);
-      }
-
       //add count object
       const masterCountObj = {
         watch: 0,
@@ -132,6 +123,25 @@ const checkCategory = (value) => {
         read: 0,
         buy: 0
       };
+
+      if (data[0] === undefined) {
+        //If no result is found, ie no types/no desc
+        //redo search with city??
+        let types = value.split(" ");
+        //Add the query words into an array, and test these before returning none
+        types = removeConjunctions(types);
+        const typesCategoryObj = returnCountObject(types, masterCountObj);
+        const highestCategory = returnHighestVal(typesCategoryObj);
+        if (highestCategory !== 'none') {
+          return highestCategory;
+        }
+        return 'none';
+      }
+
+      for (let elm of data[0].result['@type']) {
+        console.log("here is an elm of types:", elm);
+      }
+
 
       const description = data[0].result.description;
       const descriptionBody = data[0].result.detailedDescription.articleBody
@@ -143,7 +153,8 @@ const checkCategory = (value) => {
         //check types, if there's match, return the match
         const typesCategoryObj = returnCountObject(types, masterCountObj);
         const highestCategory = returnHighestVal(typesCategoryObj);
-        if (highestCategory !== 'none') {
+        if (highestCategory !== 'none' && highestCategory >= 2) {
+          //returns the highestCategory if 2 or more count
           return highestCategory;
         }
       }
@@ -177,7 +188,11 @@ const checkCategory = (value) => {
       }
 
       //***RERUN API WITH CITY NAME BEFORE RETURNING NONE
+      // Check if count fell thru from only having 1
+      if (highestCategory >= 1 || highestDescCategory >= 1 || highestDescBodyCategory >= 1) {
+        //sort to find the greatest
 
+      }
       console.log("Gone thru all tests, before returning NONE here is countObj:", masterCountObj);
       if (types.includes("Thing")) {
         //If no tests pass, checks for 'thing' inside types, and returns buy if true
