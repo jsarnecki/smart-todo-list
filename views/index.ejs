@@ -64,7 +64,8 @@
   <!-- main content here -->
     <main>
       <header class="task-input">
-        <form method="post" action="/api/tasks/new">
+        <div class="error" id="errorname"></div>
+        <form id="task-form" method="post" action="/api/tasks/new">
           <p>/add$</p>
           <input name="text" id="user-input" autocomplete="off"></input>
         </form>

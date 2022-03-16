@@ -1,9 +1,11 @@
 // Client facing scripts here
 
 const renderList = (tasks) => {
+  let appendTask = "";
   for (task of tasks) {
-    $("#todo-list").append(makeListTask(task));
+    appendTask += makeListTask(task);
   }
+  $("#todo-list").html(appendTask)
 }
 
 const icons = {
@@ -40,11 +42,11 @@ const loadList = () => {
     })
 }
 
-$(document).ready(function() {
+$(document).ready(function () {
   loadList();
   $("#username-input").hide();
 
-  $("#swap-button").click(function() {
+  $("#swap-button").click(function () {
     let action = $(this).html();
 
     if (action === "/login") {
@@ -62,7 +64,37 @@ $(document).ready(function() {
     $("#login-register").html(html);
   });
 
-  $(document).on("click", "[name='delete-task']", function() {
+  // FE error button
+
+  $('#task-form').on('submit', function (event) {
+    event.preventDefault();
+    let data = $('form').serialize();
+    let inputVal = $('#user-input').val();
+    const error = $('#errorname');
+    if (inputVal.length === 0) {
+      error.html("form empty");
+      error.slideDown();
+      return;
+    } else if (inputVal.length > 209) {
+      error.html("input too long");
+      error.slideDown();
+      return;
+    } else {
+      error.slideUp();
+      $.ajax({
+        type: "POST",
+        url: "/api/tasks/new",
+        data: data,
+      })
+        .then(function () {
+          loadList();
+          $('#user-input').val('');
+        });
+    }
+  })
+  // FE error handling ^^^^^^
+
+  $(document).on("click", "[name='delete-task']", function () {
     const task_id = $($(this).closest("article").children("div").children("label")[0]).attr("name");
 
     $.post(`/api/tasks/delete/${task_id}`)
@@ -71,7 +103,7 @@ $(document).ready(function() {
       })
   });
 
-  $(document).on("click", "[name='change-category']", function() {
+  $(document).on("click", "[name='change-category']", function () {
     const task_id = $($(this).closest("article").children("div").children("label")[0]).attr("name");
 
     $.post(`/api/tasks/update/category/${task_id}`)
@@ -86,7 +118,7 @@ $(document).ready(function() {
       });
   });
 
-  $(document).on("click", "[name='complete-task']", function() {
+  $(document).on("click", "[name='complete-task']", function () {
     const task_id = $(this).parent().children("label").attr("name");
     $.post(`/api/tasks/update/complete/${task_id}`);
   });
