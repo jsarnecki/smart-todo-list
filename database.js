@@ -4,20 +4,46 @@
 const request = require("request-promise");
 const APIKEY = 'AIzaSyBJ-eqdhdex18EpEdsIFsb-QwoeEauolF0';
 
-const checkCategory = (query) => {
-  const url = `https://kgsearch.googleapis.com/v1/entities:search?query=${query.replace(" ", "+")}&limit=1&indent=true&key=${APIKEY}&_=1647056117597`
+const checkCategory = (value) => {
+
+  //If !query return error
+
+
+  const url = `https://kgsearch.googleapis.com/v1/entities:search?query=${value.replace(" ", "+")}&limit=1&indent=true&key=${APIKEY}&_=1647056117597`
   const keywords = {
-    watch: ["Movie", "MovieSeries", "TVEpisode", "TVSeries"],
-    eat: ["Restaurant"],
-    read: ["BookSeries", "Book"],
-    buy: ["Product"]
+    watch: ["watch", "movie", "creativework", "theatre", "cinema", "film", "tv", "television", "tvseason", "TVSeries", "season", "premiered"],
+    eat: ["eat", "food", "restaurant", "organization", "corporation", "dish", "cuisine", "dine", "snack", "appetizer"],
+    read: ["read", "book", "novel", "fiction", "written", "author"],
+    buy: ["buy", "productmodel", "shop", "organization", "corporation"]
   };
 
   return request(url)
     .then((res) => {
+
       const data = JSON.parse(res).itemListElement[0].result;
+
+      if (data === undefined) {
+        return 'none';
+        //But maybe look into figuring out different logic or a different API, different method if we have time
+      }
+
+      //add count object
+
+      const description = data.description;
+      const descriptionBody = data.detailedDescription.articleBody
       const types = data["@type"];
+
+      //Count comparison words in types, and check to see if it matches anything, and if it does, return that category
+
       console.log(types);
+      console.log(description);
+      console.log(descriptionBody);
+
+      //If no itemListElm OR Element is found, then automatically categoize to 'none'
+      //First see if anything matches in the main [types] - and then automatically add to that list
+      //But if nothing matches, then loop thru the descriptions
+
+      //if the types/descriptions are not undefined... loop through and compare if not undefined
 
       for (const category in keywords) {
         for (const keyword of keywords[category]) {
@@ -31,28 +57,27 @@ const checkCategory = (query) => {
     })
 };
 
-const addTask = (db, user_id, query) => {
+
+
+const addTask = (db, user_id, value, category) => {
   const queryString = `
   INSERT INTO tasks (user_id, description, category, date_completed, is_complete)
   VALUES ($1, $2, $3, $4, $5);
   `;
 
-  return checkCategory(query)
-    .then((category) => {
-      const values = [user_id, query, category, null, 0];
+ const values = [user_id, value, category, null, 0];
 
-      db.query(queryString, values)
-        .then((res) => {
-          if (res.rows) {
-            return Promise.resolve(res.rows);
-          } else {
-            return null;
-          }
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    });
+   return db.query(queryString, values)
+      .then((res) => {
+        if (res.rows) {
+          return Promise.resolve(res.rows);
+        } else {
+          return null;
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
 };
 
 const deleteTask = (db, task_id) => {
@@ -146,5 +171,6 @@ module.exports = {
   addTask,
   deleteTask,
   recategorizeTask,
-  completeTask
+  completeTask,
+  checkCategory
 };
