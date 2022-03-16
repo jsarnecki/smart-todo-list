@@ -4,34 +4,129 @@
 const request = require("request-promise");
 const APIKEY = 'AIzaSyBJ-eqdhdex18EpEdsIFsb-QwoeEauolF0';
 
+const keywords = {
+  watch: ["watch", "movie", "creativework", "theatre", "cinema", "film", "tv", "television", "tvseason", "tvseries", "season", "premiered"],
+  eat: ["eat", "food", "restaurant", "organization", "corporation", "dish", "cuisine", "dine", "snack", "appetizer"],
+  read: ["read", "book", "novel", "fiction", "written", "author"],
+  buy: ["buy", "productmodel", "shop", "organization", "corporation"]
+};
+
+const removePunctuation = function(str) {
+  //Makes the string lowercase as well as remove anything not a number/letter
+  let newStr = str.replace(/[^\w\s]|_/g, "")
+  .replace(/\s+/g, " ")
+  .toLowerCase();
+  return newStr;
+}
+
+const categoryFunction = function(type) {
+  console.log("checking category for:", type);
+  let resultArr = [];
+  for (const category in keywords) {
+    for (const keyword of keywords[category]) {
+      //remove punctuation when comparing---
+      if (keyword.includes(removePunctuation(type)) && type !== "" && type.length > 1) {
+        console.log(`${type} has matched with ${category}`);;
+        resultArr.push(category);
+      }
+    }
+  }
+
+  if (!resultArr.length) {
+    return resultArr;
+  }
+  if (Array.isArray(resultArr) && resultArr.length !== 0) {
+    for (const elm of resultArr) {
+      console.log(`${type} has this matching type: ${elm}`)
+    }
+  }
+  return resultArr;
+}
+
+const returnCountObject = function(array, obj) {
+  // Takes in types array, as well as the conjunctionFreeDesc array along with masterCountObj
+
+  for (const elm of array) {
+    //Each element is tested against the categories, returns an array of categories
+    let matchedKeywords = categoryFunction(elm);
+    console.log("matchedKeywords:", matchedKeywords);
+    for (const cat of matchedKeywords) {
+      if (cat === 'watch') {
+        obj.watch++;
+      }
+      if (cat === 'eat') {
+        obj.eat++;
+      }
+      if (cat === 'read') {
+        obj.read++;
+      }
+      if (cat === 'buy') {
+        obj.buy++;
+      }
+    }
+  }
+  console.log(`Total from masterCount: watch: ${obj.watch}, eat: ${obj.eat}, read: ${obj.read}, buy: ${obj.buy}`);
+  return obj;
+}
+
 const checkCategory = (value) => {
 
-  //If !query return error
-
-
   const url = `https://kgsearch.googleapis.com/v1/entities:search?query=${value.replace(" ", "+")}&limit=1&indent=true&key=${APIKEY}&_=1647056117597`
-  const keywords = {
-    watch: ["watch", "movie", "creativework", "theatre", "cinema", "film", "tv", "television", "tvseason", "TVSeries", "season", "premiered"],
-    eat: ["eat", "food", "restaurant", "organization", "corporation", "dish", "cuisine", "dine", "snack", "appetizer"],
-    read: ["read", "book", "novel", "fiction", "written", "author"],
-    buy: ["buy", "productmodel", "shop", "organization", "corporation"]
-  };
+
 
   return request(url)
     .then((res) => {
 
-      const data = JSON.parse(res).itemListElement[0].result;
-
-      if (data === undefined) {
+      const data = JSON.parse(res).itemListElement;
+      //Refactor -- take off [0].result ??  needs to have the condition below checking undefined
+      if (data[0] === undefined) {
         return 'none';
         //But maybe look into figuring out different logic or a different API, different method if we have time
       }
+      console.log(data[0]['@type']);
+      //THERE IS MORE THAN 1 @type --- refactor conditioning
 
       //add count object
+      const masterCountObj = {
+        watch: 0,
+        eat: 0,
+        read: 0,
+        buy: 0
+      };
 
-      const description = data.description;
-      const descriptionBody = data.detailedDescription.articleBody
+      const description = data[0].result.description;
+      const descriptionBody = data[0].result.detailedDescription.articleBody
       const types = data["@type"];
+
+      if (types === undefined) {
+        return 'none'; //Temp edge case, probably check description/body before returning none
+      }
+      const typesCategoryObj = returnCountObject(types, masterCountObj);
+
+      //Check the object that is returned, whichever category has the most, return that category, else return 'none'
+      const returnHighestVal = function(obj) {
+        const valArr = Object.values(obj);
+        const keyArr = Object.keys(obj);
+
+        let maxVal = valArr[0];
+        let maxIndex = 0;
+
+        for (let elm of valArr) {
+          if (elm >= maxVal) {
+            maxVal = elm;
+            maxIndex = valArr.indexOf(elm);
+          }
+        }
+        //If two values have the same amount?
+        if (maxVal === 0) {
+          console.log("no values checked")
+          return 'none';
+        }
+        return keyArr[maxIndex];
+      }
+
+      const highestCategory = returnHighestVal(typesCategoryObj);
+      return highestCategory;
 
       //Count comparison words in types, and check to see if it matches anything, and if it does, return that category
 
@@ -41,7 +136,7 @@ const checkCategory = (value) => {
 
       //If no itemListElm OR Element is found, then automatically categoize to 'none'
       //First see if anything matches in the main [types] - and then automatically add to that list
-      //But if nothing matches, then loop thru the descriptions
+      //But if nothing matches, or equal matches, (or only 1 match?), then loop thru the descriptions tho check if defined first
 
       //if the types/descriptions are not undefined... loop through and compare if not undefined
 
