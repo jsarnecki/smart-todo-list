@@ -6,10 +6,13 @@ const APIKEY = 'AIzaSyBJ-eqdhdex18EpEdsIFsb-QwoeEauolF0';
 
 const keywords = {
   watch: ["watch", "movie", "creativework", "theatre", "cinema", "film", "tv", "television", "tvseason", "tvseries", "season", "premiered"],
-  eat: ["eat", "food", "restaurant", "organization", "corporation", "dish", "cuisine", "dine", "snack", "appetizer"],
+  eat: ["eat", "event", "place", "food", "restaurant", "organization", "corporation", "dish", "cuisine", "dine", "snack", "appetizer", "recipe", "stadiumorarena"],
   read: ["read", "book", "novel", "fiction", "written", "author"],
-  buy: ["buy", "productmodel", "shop", "organization", "corporation"]
+  buy: ["buy", "productmodel", "shop", "organization", "corporation"] //thing?
+  //"organization", "corporation" - could trip off both eat and buy
 };
+//"Nouns that relate to... (and add these as more keywords)"
+      //***Need a condition to match against plurals of the keywords
 
 const removePunctuation = function(str) {
   //Makes the string lowercase as well as remove anything not a number/letter
@@ -17,6 +20,17 @@ const removePunctuation = function(str) {
   .replace(/\s+/g, " ")
   .toLowerCase();
   return newStr;
+}
+
+const removeConjunctions = function(arr) {
+  const conjunctions = ["the", "a", "an", "and", "or", "that", "as", "than", "so", "since", "is", "of", "are", "in", "be", "also", "by", "him", "her"];
+  const freshArr = [];
+  for (const elm of arr) {
+    if (!conjunctions.includes(elm.toLowerCase())) {
+      freshArr.push(elm);
+    }
+  }
+  return freshArr;
 }
 
 const categoryFunction = function(type) {
@@ -69,22 +83,47 @@ const returnCountObject = function(array, obj) {
   return obj;
 }
 
+const returnHighestVal = function(obj) {
+  const valArr = Object.values(obj);
+  const keyArr = Object.keys(obj);
+
+  let maxVal = valArr[0];
+  let maxIndex = 0;
+
+  for (let elm of valArr) {
+    if (elm >= maxVal) {
+      maxVal = elm;
+      maxIndex = valArr.indexOf(elm);
+    }
+  }
+  //****If two values have the same amount?
+  if (maxVal === 0) {
+    console.log("no values checked")
+    return 'none';
+  }
+  return keyArr[maxIndex];
+}
+
 const checkCategory = (value) => {
 
   const url = `https://kgsearch.googleapis.com/v1/entities:search?query=${value.replace(" ", "+")}&limit=1&indent=true&key=${APIKEY}&_=1647056117597`
 
-
   return request(url)
     .then((res) => {
 
+      console.log("original data before parse:", res);
       const data = JSON.parse(res).itemListElement;
-      //Refactor -- take off [0].result ??  needs to have the condition below checking undefined
-      if (data[0] === undefined) {
-        return 'none';
-        //But maybe look into figuring out different logic or a different API, different method if we have time
+      console.log("original data (.itemListElement):", data);
+
+      // if (data[0] === undefined) {
+      //   //redo search with city
+      //   return 'none';
+      //   //But maybe look into figuring out different logic or a different API, different method if we have time
+      // }
+
+      for (let elm of data[0].result['@type']) {
+        console.log("here is an elm of types:", elm);
       }
-      console.log(data[0]['@type']);
-      //THERE IS MORE THAN 1 @type --- refactor conditioning
 
       //add count object
       const masterCountObj = {
@@ -96,58 +135,55 @@ const checkCategory = (value) => {
 
       const description = data[0].result.description;
       const descriptionBody = data[0].result.detailedDescription.articleBody
-      const types = data["@type"];
+      const types = data[0].result["@type"];
 
-      if (types === undefined) {
-        return 'none'; //Temp edge case, probably check description/body before returning none
-      }
-      const typesCategoryObj = returnCountObject(types, masterCountObj);
-
-      //Check the object that is returned, whichever category has the most, return that category, else return 'none'
-      const returnHighestVal = function(obj) {
-        const valArr = Object.values(obj);
-        const keyArr = Object.keys(obj);
-
-        let maxVal = valArr[0];
-        let maxIndex = 0;
-
-        for (let elm of valArr) {
-          if (elm >= maxVal) {
-            maxVal = elm;
-            maxIndex = valArr.indexOf(elm);
-          }
-        }
-        //If two values have the same amount?
-        if (maxVal === 0) {
-          console.log("no values checked")
-          return 'none';
-        }
-        return keyArr[maxIndex];
-      }
-
-      const highestCategory = returnHighestVal(typesCategoryObj);
-      return highestCategory;
-
-      //Count comparison words in types, and check to see if it matches anything, and if it does, return that category
-
-      console.log(types);
-      console.log(description);
-      console.log(descriptionBody);
-
-      //If no itemListElm OR Element is found, then automatically categoize to 'none'
-      //First see if anything matches in the main [types] - and then automatically add to that list
-      //But if nothing matches, or equal matches, (or only 1 match?), then loop thru the descriptions tho check if defined first
-
-      //if the types/descriptions are not undefined... loop through and compare if not undefined
-
-      for (const category in keywords) {
-        for (const keyword of keywords[category]) {
-          if (types.includes(keyword)) {
-            return category;
-          }
+      /////------#1 CHECK TYPES------///////
+      console.log("types:", types);
+      if (types) {
+        //check types, if there's match, return the match
+        const typesCategoryObj = returnCountObject(types, masterCountObj);
+        const highestCategory = returnHighestVal(typesCategoryObj);
+        if (highestCategory !== 'none') {
+          return highestCategory;
         }
       }
 
+      //////--------#2 CHECK DESCRIPTION --------/////
+      console.log("description", description);
+      if (description) {
+        //check if description exist, try matching - return match if exists
+        let descriptionArr = description.split(" ");
+        descriptionArr = removeConjunctions(descriptionArr);
+        const descriptionCategoryObj = returnCountObject(descriptionArr, masterCountObj);
+        const highestDescCategory = returnHighestVal(descriptionCategoryObj);
+        if (highestDescCategory !== 'none') {
+          console.log("highest val from descripton check:", highestDescCategory);
+          return highestDescCategory;
+        }
+      }
+
+      ///////--------#3 CHECK DESCRIPTION BODY---------//////
+      console.log("descriptionBody", descriptionBody);
+      if (descriptionBody) {
+         //check if descriptionBody exist, try matching - return match if exists
+        let descriptionBodyArr = descriptionBody.split(" ");
+        descriptionBodyArr = removeConjunctions(descriptionBodyArr);
+        const descriptionBodyObj = returnCountObject(descriptionBodyArr, masterCountObj);
+        const highestDescBodyCategory = returnHighestVal(descriptionBodyObj);
+        if (highestDescBodyCategory !== 'none') {
+          console.log("highest val from descriptonBody check:", highestDescBodyCategory);
+          return highestDescBodyCategory;
+        }
+      }
+
+      //***RERUN API WITH CITY NAME BEFORE RETURNING NONE
+
+      console.log("Gone thru all tests, before returning NONE here is countObj:", masterCountObj);
+      if (types.includes("Thing")) {
+        //If no tests pass, checks for 'thing' inside types, and returns buy if true
+        //***Though this sometimes gives weird results so maybe refactor
+        return 'buy';
+      }
       return 'none';
     })
 };
