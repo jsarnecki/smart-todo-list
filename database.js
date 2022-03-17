@@ -5,7 +5,7 @@ const keywords = {
   watch: ["watch", "movie", "creativework", "theatre", "cinema", "film", "tv", "television", "tvseason", "tvseries", "season", "premiered"],
   eat: ["eat", "event", "dinner", "lunch", "place", "food", "restaurant", "organization", "corporation", "dish", "cafe", "cuisine", "dine", "snack", "appetizer", "recipe", "stadiumorarena", "menu"],
   read: ["read", "book", "novel", "fiction", "written", "author"],
-  buy: ["buy", "productmodel", "shop", "organization", "corporation"]
+  buy: ["buy", "productmodel", "shop", "organization", "corporation", "clothing", "housekeeping", "clothing", "garment", "housekeeping", "ingredient", "beauty"]
   //"organization", "corporation" - could trip off both eat and buy
 };
 //"Nouns that relate to... (and add these as more keywords)"
@@ -36,15 +36,12 @@ const categoryFunction = function(type) {
   console.log("checking category for:", type);
   let resultArr = [];
   for (const category in keywords) {
-    for (const keyword of keywords[category]) {
-      //removes punctuation if there is any, and tests against lowercase (inside function) so case isn't an issue
-      if (keyword.includes(removePunctuation(type)) && type !== "" && type.length > 1) {
-        console.log(`${type} has matched with ${category}`);
-        resultArr.push(category);
-      }
+    //removes punctuation if there is any, and tests against lowercase (inside function) so case isn't an issue
+    if (category.includes(removePunctuation(type)) && type !== "" && type.length > 1) {
+      console.log(`${type} has matched with ${category}`);
+      resultArr.push(category);
     }
   }
-
   if (Array.isArray(resultArr) && resultArr.length !== 0) {
     //This is for testing purposes to see the matches in console
     for (const elm of resultArr) {
@@ -136,8 +133,9 @@ const checkCategory = (value) => {
           console.log("No categories matched... Searching with Vancouver, plz standby....");
           return checkCategory(value);
         }
-        //If it's run twice now, just return none
-        return 'none';
+        const random = ["buy", "none"];
+        //If it's run twice now, return none or buy
+        return random[Math.floor(Math.random() * 2)];
       }
 
       /////------#1 CHECK TYPES------///////
@@ -174,6 +172,7 @@ const checkCategory = (value) => {
           console.log("No categories matched... Searching with Vancouver, plz standby....");
           return checkCategory(value);
         }
+        console.log("It's a thing?!");
         return types.includes("Thing") ? "buy" : "none";
       }
 
