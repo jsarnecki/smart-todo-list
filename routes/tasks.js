@@ -8,7 +8,7 @@
 const express = require('express');
 const router  = express.Router();
 
-const { addTask, deleteTask, recategorizeTask, completeTask } = require("../database");
+const { addTask, deleteTask, recategorizeTask, completeTask, checkCategory } = require("../database");
 
 module.exports = (db) => {
   router.get("/", (req, res) => {
@@ -30,13 +30,18 @@ module.exports = (db) => {
 
   router.post("/new", (req, res) => {
     const user_id = req.session.user_id;
-    const description = req.body.text
+    const description = req.body.text;
+
     if (!description) {
       return res.status(403).send('404 Error: Input required');
     }
-    addTask(db, user_id, description)
-      .then(() => {
-        res.redirect("/");
+
+    checkCategory(description)
+      .then((category) => {
+        addTask(db, user_id, description, category)
+        .then(() => {
+          res.redirect("/");
+        })
       })
   });
 
