@@ -24,6 +24,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieSession({
   user_id: "",
   email: "",
+  listOrder: "",
   keys: ["12345", "abcde"]
 }));
 
