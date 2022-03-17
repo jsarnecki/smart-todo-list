@@ -1,18 +1,16 @@
-// database.js
-// helper functions for db manipulations
 
 const request = require("request-promise");
 const APIKEY = 'AIzaSyBJ-eqdhdex18EpEdsIFsb-QwoeEauolF0';
 
 const keywords = {
   watch: ["watch", "movie", "creativework", "theatre", "cinema", "film", "tv", "television", "tvseason", "tvseries", "season", "premiered"],
-  eat: ["eat", "event", "dinner", "lunch", "place", "food", "restaurant", "organization", "corporation", "dish", "cuisine", "dine", "snack", "appetizer", "recipe", "stadiumorarena"],
+  eat: ["eat", "event", "dinner", "lunch", "place", "food", "restaurant", "organization", "corporation", "dish", "cafe", "cuisine", "dine", "snack", "appetizer", "recipe", "stadiumorarena"],
   read: ["read", "book", "novel", "fiction", "written", "author"],
-  buy: ["buy", "productmodel", "shop", "organization", "corporation"] //thing?
+  buy: ["buy", "productmodel", "shop", "organization", "corporation"]
   //"organization", "corporation" - could trip off both eat and buy
 };
 //"Nouns that relate to... (and add these as more keywords)"
-      //***Need a condition to match against plurals of the keywords
+//***Need a condition to match against plurals of the keywords
 
 const removePunctuation = function(str) {
   //Makes the string lowercase as well as remove anything not a number/letter
@@ -35,11 +33,12 @@ const removeConjunctions = function(arr) {
 }
 
 const categoryFunction = function(type) {
+  //Takes a string input "type" and tests it against all the category keywords
   console.log("checking category for:", type);
   let resultArr = [];
   for (const category in keywords) {
     for (const keyword of keywords[category]) {
-      //remove punctuation when comparing---
+      //removes punctuation if there is any, and tests against lowercase (inside function) so case isn't an issue
       if (keyword.includes(removePunctuation(type)) && type !== "" && type.length > 1) {
         console.log(`${type} has matched with ${category}`);;
         resultArr.push(category);
@@ -47,19 +46,17 @@ const categoryFunction = function(type) {
     }
   }
 
-  if (!resultArr.length) {
-    return resultArr;
-  }
   if (Array.isArray(resultArr) && resultArr.length !== 0) {
+    //This is for testing purposes to see the matches in console
     for (const elm of resultArr) {
-      console.log(`${type} has this matching type: ${elm}`)
+      console.log(`"${type}" has this matching type: ${elm}`)
     }
   }
   return resultArr;
 }
 
 const returnCountObject = function(array, obj) {
-  // Takes in types array, as well as the conjunctionFreeDesc array along with masterCountObj
+  // Takes in types array, as well as the conjunction-free-array along with masterCountObj
 
   for (const elm of array) {
     //Each element is tested against the categories, returns an array of categories
@@ -138,28 +135,20 @@ const checkCategory = (value) => {
         return 'none';
       }
 
-      for (let elm of data[0].result['@type']) {
-        console.log("here is an elm of types:", elm);
-      }
-
-
-      const description = data[0].result.description;
-      const descriptionBody = data[0].result.detailedDescription.articleBody
-      const types = data[0].result["@type"];
-
       /////------#1 CHECK TYPES------///////
+      const types = data[0].result["@type"];
       console.log("types:", types);
       if (types) {
         //check types, if there's match, return the match
         const typesCategoryObj = returnCountObject(types, masterCountObj);
         const highestCategory = returnHighestVal(typesCategoryObj);
-        if (highestCategory !== 'none' && highestCategory >= 2) {
-          //returns the highestCategory if 2 or more count
+        if (highestCategory !== 'none') {
           return highestCategory;
         }
       }
 
       //////--------#2 CHECK DESCRIPTION --------/////
+      const description = data[0].result.description;
       console.log("description", description);
       if (description) {
         //check if description exist, try matching - return match if exists
@@ -173,7 +162,13 @@ const checkCategory = (value) => {
         }
       }
 
+      if (!data[0].result.detailedDescription.articleBody) {
+        //In case there is no articleBody key
+        return types.includes("Thing") ? "thing" : "none";
+      }
+
       ///////--------#3 CHECK DESCRIPTION BODY---------//////
+      const descriptionBody = data[0].result.detailedDescription.articleBody
       console.log("descriptionBody", descriptionBody);
       if (descriptionBody) {
          //check if descriptionBody exist, try matching - return match if exists
@@ -187,18 +182,15 @@ const checkCategory = (value) => {
         }
       }
 
-      //***RERUN API WITH CITY NAME BEFORE RETURNING NONE
-      // Check if count fell thru from only having 1
-      if (highestCategory >= 1 || highestDescCategory >= 1 || highestDescBodyCategory >= 1) {
-        //sort to find the greatest
+      //***RERUN API WITH VANCOUVER BEFORE RETURNING NONE
 
-      }
       console.log("Gone thru all tests, before returning NONE here is countObj:", masterCountObj);
       if (types.includes("Thing")) {
         //If no tests pass, checks for 'thing' inside types, and returns buy if true
-        //***Though this sometimes gives weird results so maybe refactor
+        //***Though this sometimes gives weird results so maybe refactor or just remove
         return 'buy';
       }
+
       return 'none';
     })
 };
