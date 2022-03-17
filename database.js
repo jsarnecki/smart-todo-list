@@ -1,10 +1,9 @@
-
 const request = require("request-promise");
 const APIKEY = 'AIzaSyBJ-eqdhdex18EpEdsIFsb-QwoeEauolF0';
 
 const keywords = {
   watch: ["watch", "movie", "creativework", "theatre", "cinema", "film", "tv", "television", "tvseason", "tvseries", "season", "premiered"],
-  eat: ["eat", "event", "dinner", "lunch", "place", "food", "restaurant", "organization", "corporation", "dish", "cafe", "cuisine", "dine", "snack", "appetizer", "recipe", "stadiumorarena"],
+  eat: ["eat", "event", "dinner", "lunch", "place", "food", "restaurant", "organization", "corporation", "dish", "cafe", "cuisine", "dine", "snack", "appetizer", "recipe", "stadiumorarena", "menu"],
   read: ["read", "book", "novel", "fiction", "written", "author"],
   buy: ["buy", "productmodel", "shop", "organization", "corporation"]
   //"organization", "corporation" - could trip off both eat and buy
@@ -40,7 +39,7 @@ const categoryFunction = function(type) {
     for (const keyword of keywords[category]) {
       //removes punctuation if there is any, and tests against lowercase (inside function) so case isn't an issue
       if (keyword.includes(removePunctuation(type)) && type !== "" && type.length > 1) {
-        console.log(`${type} has matched with ${category}`);;
+        console.log(`${type} has matched with ${category}`);
         resultArr.push(category);
       }
     }
@@ -123,7 +122,6 @@ const checkCategory = (value) => {
 
       if (data[0] === undefined) {
         //If no result is found, ie no types/no desc
-        //redo search with city??
         let types = value.split(" ");
         //Add the query words into an array, and test these before returning none
         types = removeConjunctions(types);
@@ -132,6 +130,13 @@ const checkCategory = (value) => {
         if (highestCategory !== 'none') {
           return highestCategory;
         }
+        //If no matches, rerun with "vancouver"
+        if (!value.includes("vancouver")) {
+          value = `${value} vancouver`;
+          console.log("No categories matched... Searching with Vancouver, plz standby....");
+          return checkCategory(value);
+        }
+        //If it's run twice now, just return none
         return 'none';
       }
 
@@ -163,8 +168,13 @@ const checkCategory = (value) => {
       }
 
       if (!data[0].result.detailedDescription.articleBody) {
-        //In case there is no articleBody key
-        return types.includes("Thing") ? "thing" : "none";
+        //In case there is no articleBody key - first checks "Vancouver" search, else returns buy or none
+        if (!value.includes("vancouver")) {
+          value = `${value} vancouver`;
+          console.log("No categories matched... Searching with Vancouver, plz standby....");
+          return checkCategory(value);
+        }
+        return types.includes("Thing") ? "buy" : "none";
       }
 
       ///////--------#3 CHECK DESCRIPTION BODY---------//////
@@ -182,7 +192,13 @@ const checkCategory = (value) => {
         }
       }
 
-      //***RERUN API WITH VANCOUVER BEFORE RETURNING NONE
+        console.log("does value have Vancouver?", value.includes("vancouver"), value);
+        //If no matches up till now, checks category with the "vancouver" appended for a higher accuracy
+        if (!value.includes("vancouver")) {
+          value = `${value} vancouver`;
+          console.log("No categories matched... Searching with Vancouver, plz standby....");
+          return checkCategory(value);
+        }
 
       console.log("Gone thru all tests, before returning NONE here is countObj:", masterCountObj);
       if (types.includes("Thing")) {
@@ -194,7 +210,6 @@ const checkCategory = (value) => {
       return 'none';
     })
 };
-
 
 
 const addTask = (db, user_id, value, category) => {
