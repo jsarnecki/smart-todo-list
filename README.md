@@ -4,7 +4,9 @@ A single page, terminal-themed to-do list.
 
 ## Final Product
 
-*screenshots*
+!["Desktop window size"](https://github.com/trijaychan/smart-todo-list/blob/master/docs/screenshots/ss1.png?raw=true)
+
+!["Other window sizes"](https://github.com/trijaychan/smart-todo-list/blob/master/docs/screenshots/ss2.png?raw=true)
 
 ## Dependencies
 
