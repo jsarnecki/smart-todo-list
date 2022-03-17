@@ -30,7 +30,11 @@ module.exports = (db) => {
 
   router.post("/new", (req, res) => {
     const user_id = req.session.user_id;
-    addTask(db, user_id, req.body.text)
+    const description = req.body.text
+    if (!description) {
+      return res.status(403).send('404 Error: Input required');
+    }
+    addTask(db, user_id, description)
       .then(() => {
         res.redirect("/");
       })
