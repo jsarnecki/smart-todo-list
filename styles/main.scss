@@ -104,11 +104,12 @@ main {
 .task-input {
   width: 100%;
   display: flex;
-  justify-content: center;
+  align-items: center;
   color: #39ff14;
   font-size: 250%;
   margin-top: 0.5em;
   margin-bottom: 1em;
+  flex-direction: column;
 }
 
 .task-input form {
@@ -191,4 +192,16 @@ input[type="checkbox"] {
 
 input:checked {
   box-shadow: inset 0 0 0 25px #39ff14;
+}
+
+
+.error {
+  color: #D8000C;
+  font-size: 20px;
+  background-color: black;
+  font-weight: bolder;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-top: 10px;
 }
