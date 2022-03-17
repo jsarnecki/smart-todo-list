@@ -64,10 +64,13 @@
   <!-- main content here -->
     <main>
       <header class="task-input">
-        <form id="task-form"method="post" action="/api/tasks/new">
-          <p>/add$</p>
-          <input name="text" id="user-input" autocomplete="off"></input>
-        </form>
+        <div>
+          <form id="task-form"method="post" action="/api/tasks/new">
+            <p>/add$</p>
+            <input name="text" id="user-input" autocomplete="off"></input>
+          </form>
+          <button id="sort-list"><i class="fa-solid fa-clock"></i></button>
+        </div>
         <div class="error" id="errorname"></div>
       </header>
       <section class="list" id="todo-list"></section>

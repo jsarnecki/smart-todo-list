@@ -32,6 +32,7 @@ module.exports = (db) => {
         }
         req.session.user_id = data.rows[0].id;
         req.session.username = data.rows[0].username;
+        req.session.listOrder = "time";
         res.redirect("/");
       })
       .catch(err => {
@@ -85,6 +86,7 @@ module.exports = (db) => {
               //set cookies
               req.session.user_id = newUser.id;
               req.session.username = newUser.username;
+              req.session.listOrder = "time";
               res.redirect("/");
             })
             .catch(err => {
