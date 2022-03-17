@@ -13,10 +13,18 @@ const { addTask, deleteTask, recategorizeTask, completeTask, checkCategory } = r
 module.exports = (db) => {
   router.get("/", (req, res) => {
     const user_id = req.session.user_id;
-    let query = "SELECT * FROM tasks ";
-    user_id ? query += "WHERE user_id = $1 ORDER BY id;" : query += "ORDER BY id;";
+    const order = req.session.listOrder;
+    let query = "SELECT * FROM tasks WHERE user_id = $1 ";
+    const values = [user_id];
 
-    db.query(query, [user_id])
+    if (order === "time") {
+      query += "ORDER BY id;"
+    } else {
+      query += "and category = $2 ORDER BY id;";
+      values.push(order);
+    }
+
+    db.query(query, values)
       .then(data => {
         const tasks = data.rows;
         res.json({ tasks });
@@ -26,6 +34,17 @@ module.exports = (db) => {
           .status(500)
           .json({ error: err.message });
       });
+  });
+
+  router.post("/sort-list", (req, res) => {
+    const category = req.session.listOrder;
+    const categories = ["eat", "watch", "read", "buy", "none", "time"];
+
+    let index = categories.indexOf(category);
+    index + 1 > 5 ? index = 0 : index++;
+
+    req.session.listOrder = categories[index];
+    res.send(categories[index]);
   });
 
   router.post("/new", (req, res) => {
