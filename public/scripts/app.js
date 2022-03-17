@@ -13,7 +13,8 @@ const icons = {
   watch: "video",
   read: "book-open",
   buy: "cart-shopping",
-  none: "question"
+  none: "question",
+  time: "clock"
 }
 
 const makeListTask = (taskInfo) => {
@@ -92,6 +93,14 @@ $(document).ready(function () {
         });
     }
   })
+
+  $("#sort-list").click(function() {
+    $.post("/api/tasks/sort-list")
+      .then((category) => {
+        $(this).children("i").attr("class", `fa-solid fa-${icons[category]} fa-lg`);
+        loadList();
+      })
+  });
 
   $(document).on("click", "[name='delete-task']", function () {
     const task_id = $($(this).closest("article").children("div").children("label")[0]).attr("name");
