@@ -1,5 +1,24 @@
 -- Tasks table seeds here
 INSERT INTO tasks (user_id, category, description, is_complete, date_completed)
-VALUES (1, 'watch', 'Ex Machina', 0, NULL),
-(2, 'eat', 'Nachos', 1, '2022-02-15'),
-(3, 'read', 'Skinny legs and all', 0, NULL);
+VALUES (1, 'watch', 'Harry Potter', 0, NULL),
+(1, 'read', '1984', 0, NULL),
+(1, 'eat', 'Tim Hortons', 1, NULL),
+(1, 'eat', 'Tacofino', 0, NULL),
+(1, 'watch', 'Batman', 0, NULL),
+(1, 'read', 'To Kill a Mockingbird', 0, NULL),
+(1, 'buy', 'Lotion', 1, NULL),
+(1, 'buy', 'Toilet Paper', 1, NULL),
+(1, 'eat', 'Roxy Burger', 0, NULL),
+(1, 'watch', 'Code Geass', 0, NULL),
+(1, 'read', 'Newspaper', 1, NULL),
+(2, 'watch', 'Harry Potter', 0, NULL),
+(2, 'read', 'The Book Thief', 0, NULL),
+(2, 'eat', 'Starbucks', 1, NULL),
+(2, 'buy', 'Bread', 0, NULL),
+(2, 'buy', 'Makeup', 1, NULL),
+(2, 'watch', 'Attack on Titan', 0, NULL),
+(2, 'eat', 'HaiDiLao', 0, NULL),
+(2, 'watch', 'Euphoria', 1, NULL),
+(2, 'read', 'Fahrenheit 451', 0, NULL),
+(2, 'buy', 'Hoodie', 1, NULL),
+(2, 'read', 'The Great Gatsby', 0, NULL);
