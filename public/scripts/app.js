@@ -44,6 +44,8 @@ const loadList = () => {
 
 $(document).ready(function () {
   loadList();
+
+  $("#errorname").hide();
   $("#username-input").hide();
 
   $("#swap-button").click(function () {
@@ -63,8 +65,6 @@ $(document).ready(function () {
     $(this).html(action);
     $("#login-register").html(html);
   });
-
-  // FE error button
 
   $('#task-form').on('submit', function (event) {
     event.preventDefault();
@@ -92,7 +92,6 @@ $(document).ready(function () {
         });
     }
   })
-  // FE error handling ^^^^^^
 
   $(document).on("click", "[name='delete-task']", function () {
     const task_id = $($(this).closest("article").children("div").children("label")[0]).attr("name");
