@@ -6,13 +6,11 @@ const keywords = {
   eat: ["eat", "event", "dinner", "lunch", "place", "food", "restaurant", "organization", "corporation", "dish", "cafe", "cuisine", "dine", "snack", "appetizer", "recipe", "stadiumorarena", "menu"],
   read: ["read", "book", "novel", "fiction", "written", "author"],
   buy: ["buy", "productmodel", "shop", "organization", "corporation", "clothing", "housekeeping", "clothing", "garment", "housekeeping", "ingredient", "beauty"]
-  //"organization", "corporation" - could trip off both eat and buy
 };
-//"Nouns that relate to... (and add these as more keywords)"
 //***Need a condition to match against plurals of the keywords
 
 const removePunctuation = function(str) {
-  //Makes the string lowercase as well as remove anything not a number/letter
+  // Makes the string lowercase as well as remove anything not a number/letter
   let newStr = str.replace(/[^\w\s]|_/g, "")
   .replace(/\s+/g, " ")
   .toLowerCase();
@@ -32,18 +30,19 @@ const removeConjunctions = function(arr) {
 }
 
 const categoryFunction = function(type) {
-  //Takes a string input "type" and tests it against all the category keywords
+  // Takes a string input "type" and tests it against all the category keywords
+  type = removePunctuation(type);
   console.log("checking category for:", type);
   let resultArr = [];
   for (const category in keywords) {
-    //removes punctuation if there is any, and tests against lowercase (inside function) so case isn't an issue
-    if (category.includes(removePunctuation(type)) && type !== "" && type.length > 1) {
+    // Removes punctuation if there is any, and tests against lowercase (inside function) so case isn't an issue
+    if (keywords[category].includes(type) && type !== "" && type.length > 1) {
       console.log(`${type} has matched with ${category}`);
       resultArr.push(category);
     }
   }
   if (Array.isArray(resultArr) && resultArr.length !== 0) {
-    //This is for testing purposes to see the matches in console
+    // This is for testing purposes to see the matches in console
     for (const elm of resultArr) {
       console.log(`"${type}" has this matching type: ${elm}`)
     }
@@ -55,7 +54,7 @@ const returnCountObject = function(array, obj) {
   // Takes in types array, as well as the conjunction-free-array along with masterCountObj
 
   for (const elm of array) {
-    //Each element is tested against the categories, returns an array of categories
+    // Each element is tested against the categories, returns an array of categories
     let matchedKeywords = categoryFunction(elm);
     console.log("matchedKeywords:", matchedKeywords);
     for (const cat of matchedKeywords) {
@@ -109,32 +108,32 @@ const checkCategory = (value) => {
       const data = JSON.parse(res).itemListElement;
       console.log("original data (.itemListElement):", data);
 
-      //add count object
+      // Add count object
       const masterCountObj = {
         watch: 0,
         eat: 0,
         read: 0,
         buy: 0
-      };
+      }
 
       if (data[0] === undefined) {
-        //If no result is found, ie no types/no desc
+        // If no result is found, ie no types/no desc
         let types = value.split(" ");
-        //Add the query words into an array, and test these before returning none
+        // Add the query words into an array, and test these before returning none
         types = removeConjunctions(types);
         const typesCategoryObj = returnCountObject(types, masterCountObj);
         const highestCategory = returnHighestVal(typesCategoryObj);
         if (highestCategory !== 'none') {
           return highestCategory;
         }
-        //If no matches, rerun with "vancouver"
+        // If no matches, rerun with "vancouver"
         if (!value.includes("vancouver")) {
           value = `${value} vancouver`;
           console.log("No categories matched... Searching with Vancouver, plz standby....");
           return checkCategory(value);
         }
         const random = ["buy", "none"];
-        //If it's run twice now, return none or buy
+        // If it's run twice now, return none or buy
         return random[Math.floor(Math.random() * 2)];
       }
 
@@ -142,7 +141,7 @@ const checkCategory = (value) => {
       const types = data[0].result["@type"];
       console.log("types:", types);
       if (types) {
-        //check types, if there's match, return the match
+        // Check types, if there's match, return the match
         const typesCategoryObj = returnCountObject(types, masterCountObj);
         const highestCategory = returnHighestVal(typesCategoryObj);
         if (highestCategory !== 'none') {
@@ -154,7 +153,7 @@ const checkCategory = (value) => {
       const description = data[0].result.description;
       console.log("description", description);
       if (description) {
-        //check if description exist, try matching - return match if exists
+        // Check if description exist, try matching - return match if exists
         let descriptionArr = description.split(" ");
         descriptionArr = removeConjunctions(descriptionArr);
         const descriptionCategoryObj = returnCountObject(descriptionArr, masterCountObj);
@@ -166,7 +165,7 @@ const checkCategory = (value) => {
       }
 
       if (!data[0].result.detailedDescription.articleBody) {
-        //In case there is no articleBody key - first checks "Vancouver" search, else returns buy or none
+        // In case there is no articleBody key - first checks "Vancouver" search, else returns buy or none
         if (!value.includes("vancouver")) {
           value = `${value} vancouver`;
           console.log("No categories matched... Searching with Vancouver, plz standby....");
@@ -180,7 +179,7 @@ const checkCategory = (value) => {
       const descriptionBody = data[0].result.detailedDescription.articleBody
       console.log("descriptionBody", descriptionBody);
       if (descriptionBody) {
-         //check if descriptionBody exist, try matching - return match if exists
+         // Check if descriptionBody exist, try matching - return match if exists
         let descriptionBodyArr = descriptionBody.split(" ");
         descriptionBodyArr = removeConjunctions(descriptionBodyArr);
         const descriptionBodyObj = returnCountObject(descriptionBodyArr, masterCountObj);
@@ -192,7 +191,7 @@ const checkCategory = (value) => {
       }
 
         console.log("does value have Vancouver?", value.includes("vancouver"), value);
-        //If no matches up till now, checks category with the "vancouver" appended for a higher accuracy
+        // If no matches up till now, checks category with the "vancouver" appended for a higher accuracy
         if (!value.includes("vancouver")) {
           value = `${value} vancouver`;
           console.log("No categories matched... Searching with Vancouver, plz standby....");
@@ -201,7 +200,7 @@ const checkCategory = (value) => {
 
       console.log("Gone thru all tests, before returning NONE here is countObj:", masterCountObj);
       if (types.includes("Thing")) {
-        //If no tests pass, checks for 'thing' inside types, and returns buy if true
+        // If no tests pass, checks for 'thing' inside types, and returns buy if true
         //***Though this sometimes gives weird results so maybe refactor or just remove
         return 'buy';
       }
