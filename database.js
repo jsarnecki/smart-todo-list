@@ -164,7 +164,7 @@ const checkCategory = (value) => {
         }
       }
 
-      if (!data[0].result.detailedDescription.articleBody) {
+      if (!data[0].result.detailedDescription || !data[0].result.detailedDescription.articleBody) {
         // In case there is no articleBody key - first checks "Vancouver" search, else returns buy or none
         if (!value.includes("vancouver")) {
           value = `${value} vancouver`;
